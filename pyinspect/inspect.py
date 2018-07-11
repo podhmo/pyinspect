@@ -1,17 +1,23 @@
-from inspect import isclass
 import pydoc
 import re
 
 
-def shape_text(this_cls, doc=pydoc.plaintext):
+def shape_text(this_cls, doc=pydoc.plaintext, skip_special_method=False, skip_private_method=False):
     attrs = [
         (name, kind) for name, kind, cls, _ in pydoc.classify_class_attrs(this_cls)
         if cls == this_cls
     ]
-    attrs = [
-        (name, kind) for name, kind in attrs if not (name.startswith("__") and name.endswith("__"))
-    ]
-    attrs = [(name, kind) for name, kind in attrs if not name.startswith("_")]
+
+    if skip_special_method:
+        attrs = [
+            (name, kind) for name, kind in attrs
+            if not (name.startswith("__") and name.endswith("__"))
+        ]
+
+    if skip_private_method:
+        attrs = [
+            (name, kind) for name, kind in attrs if not name.startswith("_") or name.endswith("__")
+        ]
     method_names = [name for name, kind in attrs if kind == "method"]
     method_annotations = [
         "@OVERRIDE: " if any(c for c in this_cls.mro()[1:] if hasattr(c, name)) else ""
@@ -34,9 +40,11 @@ def grep_by_indent(s, level, rx=re.compile("^\s+")):
             yield line
 
 
-def inspect(target, io=None):
+def inspect(target, io=None, skip_special_method=False, skip_private_method=False):
     for cls in target.mro():
         if cls == object:
             break
-        text = shape_text(cls)
+        text = shape_text(
+            cls, skip_special_method=skip_special_method, skip_private_method=skip_private_method
+        )
         print("\n".join(grep_by_indent(text, 4)), file=io)
