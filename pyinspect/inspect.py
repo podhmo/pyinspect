@@ -61,6 +61,9 @@ def inspect(target, io=None, skip_special_method=False, skip_private_method=Fals
         text = shape_text(
             cls, skip_special_method=skip_special_method, skip_private_method=skip_private_method
         )
+
         print(text, file=io)
+        print("", file=io)
+
         if only_this:
             break
