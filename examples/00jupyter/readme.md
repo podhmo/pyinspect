@@ -1,4 +1,4 @@
-```console
+```
 pyinspect jupyter_console.app:ZMQTerminalIPythonApp
 jupyter_console.app.ZMQTerminalIPythonApp <- jupyter_core.application.JupyterApp <- traitlets.config.application.Application <- traitlets.config.configurable.SingletonConfigurable <- jupyter_client.consoleapp.JupyterConsoleApp <- jupyter_client.connect.ConnectionFileMixin <- traitlets.config.configurable.LoggingConfigurable <- traitlets.config.configurable.Configurable <- traitlets.traitlets.HasTraits <- traitlets.traitlets.HasDescriptors <- builtins.object
     [method] handle_sigint(self, *args)
