@@ -6,13 +6,14 @@ def main(argv=None):
     parser = argparse.ArgumentParser()
     parser.add_argument("target_list", nargs="+")
     parser.add_argument("--only-this", action="store_true")
+    parser.add_argument("--only-this-module", action="store_true")
     parser.add_argument("--skip-special-method", action="store_true", help="skip __foo__()")
     parser.add_argument("--skip-private-method", action="store_true", help="skip _foo()")
     args = parser.parse_args(argv)
     run(**vars(args))
 
 
-def run(*, target_list, only_this=False, skip_special_method=False, skip_private_method=False):
+def run(*, target_list, only_this=False, only_this_module=False, skip_special_method=False, skip_private_method=False):
     from inspect import isclass, ismodule
     from pyinspect.inspect import inspect
     import magicalimport
@@ -22,6 +23,7 @@ def run(*, target_list, only_this=False, skip_special_method=False, skip_private
             target,
             skip_special_method=skip_special_method,
             skip_private_method=skip_private_method,
+            only_this=only_this,
             io=sys.stdout,
         )
 
@@ -41,7 +43,7 @@ def run(*, target_list, only_this=False, skip_special_method=False, skip_private
                     if where == builtins:
                         continue
 
-                    if only_this and where != target.__name__:
+                    if only_this_module and where != target.__name__:
                         continue
 
                     _inspect(member)

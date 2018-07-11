@@ -38,7 +38,7 @@ def grep_by_indent(s, level, rx=re.compile("^\s+")):
             yield line
 
 
-def inspect(target, io=None, skip_special_method=False, skip_private_method=False):
+def inspect(target, io=None, skip_special_method=False, skip_private_method=False, only_this=False):
     for cls in target.mro():
         if cls == object:
             break
@@ -46,3 +46,5 @@ def inspect(target, io=None, skip_special_method=False, skip_private_method=Fals
             cls, skip_special_method=skip_special_method, skip_private_method=skip_private_method
         )
         print("\n".join(grep_by_indent(text, 4)), file=io)
+        if only_this:
+            break
