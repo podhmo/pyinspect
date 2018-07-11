@@ -1,3 +1,4 @@
+from inspect import isclass
 import pydoc
 import re
 

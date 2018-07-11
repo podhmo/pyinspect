@@ -1,3 +1,6 @@
+import sys
+
+
 def main(argv=None):
     import argparse
     parser = argparse.ArgumentParser()
@@ -7,12 +10,16 @@ def main(argv=None):
 
 
 def run(*, target_list):
-    from pyinspect import inspect
+    from inspect import isclass
+    from pyinspect.inspect import inspect
     import magicalimport
 
     for path in target_list:
         target = magicalimport.import_symbol(path)
-        inspect.inspect(target)
+        if isclass(target):
+            inspect.inspect(target)
+        else:
+            print(f"sorry {path} is not class (type={type(target)}, repr={target})", file=sys.stderr)
 
 
 if __name__ == "__main__":
