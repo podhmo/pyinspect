@@ -51,7 +51,7 @@ def shape_text(this_cls, skip_special_method=False, skip_private_method=False):
 
     content = _indent("\n".join(method_docs))
     relation = " <- ".join([f"{cls.__module__}.{cls.__name__}" for cls in this_cls.mro()])
-    return "\n".join([relation, content])
+    return "\n".join([relation, content]).rstrip("\n")
 
 
 def inspect(target, io=None, skip_special_method=False, skip_private_method=False, only_this=False):
