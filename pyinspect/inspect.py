@@ -18,14 +18,12 @@ def shape_text(this_cls, doc=pydoc.plaintext, skip_special_method=False, skip_pr
         attrs = [
             (name, kind) for name, kind in attrs if not name.startswith("_") or name.endswith("__")
         ]
-    method_names = [name for name, kind in attrs if kind == "method"]
-    method_annotations = [
-        "@OVERRIDE: " if any(c for c in this_cls.mro()[1:] if hasattr(c, name)) else ""
-        for name in method_names
-    ]
     method_docs = [
-        prefix + doc.document(getattr(this_cls, name))
-        for prefix, name in zip(method_annotations, method_names)
+        "[{kind}{prefix}] {doc}".format(
+            prefix=", OVERRIDE" if any(c for c in this_cls.mro()[1:] if hasattr(c, name)) else "",
+            kind=kind,
+            doc=doc.document(getattr(this_cls, name))
+        ) for name, kind in attrs if "method" in kind
     ]
 
     content = doc.indent("".join(method_docs))
