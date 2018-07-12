@@ -52,10 +52,11 @@ traitlets.config.application.Application <- traitlets.config.configurable.Single
     [method] start(self)
 
 traitlets.config.configurable.SingletonConfigurable <- traitlets.config.configurable.LoggingConfigurable <- traitlets.config.configurable.Configurable <- traitlets.traitlets.HasTraits <- traitlets.traitlets.HasDescriptors <- builtins.object
-    [class method] _walk_mro()
     [class method] clear_instance()
-    [class method] initialized()
+        [class method] _walk_mro()
+        [class method] initialized()
     [class method] instance(*args, **kwargs)
+        [class method] _walk_mro()
 
 jupyter_client.consoleapp.JupyterConsoleApp <- jupyter_client.connect.ConnectionFileMixin <- traitlets.config.configurable.LoggingConfigurable <- traitlets.config.configurable.Configurable <- traitlets.traitlets.HasTraits <- traitlets.traitlets.HasDescriptors <- builtins.object
     [method] _connection_file_default(self)
@@ -108,9 +109,9 @@ traitlets.config.configurable.Configurable <- traitlets.traitlets.HasTraits <- t
             [class method] section_names()
     [class method] class_config_rst_doc()
     [class method] class_config_section()
-    [class method] class_get_help(inst=None)
-    [class method] class_get_trait_help(trait, inst=None)
     [class method] class_print_help(inst=None)
+        [class method] class_get_help(inst=None)
+            [class method] class_get_trait_help(trait, inst=None)
     [method] update_config(self, config)
         [method] _load_config(self, cfg, section_names=None, traits=None)
             [method] _find_my_config(self, cfg)
@@ -138,8 +139,9 @@ traitlets.traitlets.HasTraits <- traitlets.traitlets.HasDescriptors <- builtins.
     [method] add_traits(self, **traits)
     [class method] class_own_trait_events(name)
     [class method] class_own_traits(**metadata)
+        [class method] class_traits(**metadata)
     [class method] class_trait_names(**metadata)
-    [class method] class_traits(**metadata)
+        [class method] class_traits(**metadata)
     [method] on_trait_change(self, handler=None, name=None, remove=False)
         [method] unobserve(self, handler, names=traitlets.All, type='change')
             [method] _remove_notifiers(self, handler, name, type)
@@ -147,9 +149,9 @@ traitlets.traitlets.HasTraits <- traitlets.traitlets.HasDescriptors <- builtins.
             [method] _add_notifiers(self, handler, name, type)
     [method, OVERRIDE] setup_instance(self, *args, **kwargs)
     [class method] trait_events(name=None)
+        [method] trait_names(self, **metadata)
+            [method] traits(self, **metadata)
     [method] trait_metadata(self, traitname, key, default=None)
-    [method] trait_names(self, **metadata)
-        [method] traits(self, **metadata)
     [method] unobserve_all(self, name=traitlets.All)
 
 traitlets.traitlets.HasDescriptors <- builtins.object
