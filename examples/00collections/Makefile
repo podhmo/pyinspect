@@ -3,5 +3,5 @@ default:
 
 readme:
 	@echo '```'
-	pyinspect --only-this-module collections
+	pyinspect collections
 	@echo '```'

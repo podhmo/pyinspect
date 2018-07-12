@@ -1,5 +1,5 @@
 ```
-pyinspect --only-this-module wsgiref.simple_server
+pyinspect wsgiref.simple_server
 00:wsgiref.simple_server.ServerHandler <- 00:wsgiref.handlers.SimpleHandler <- 00:wsgiref.handlers.BaseHandler <- 00:builtins.object
 01:    [method, OVERRIDE] close(self)
 

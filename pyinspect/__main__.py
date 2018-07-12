@@ -6,7 +6,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser()
     parser.add_argument("target_list", nargs="+")
     parser.add_argument("--only-this", action="store_true")
-    parser.add_argument("--only-this-module", action="store_true")
+    parser.add_argument("--show-all", action="store_true")
     parser.add_argument("--skip-special-method", action="store_true", help="skip __foo__()")
     parser.add_argument("--skip-private-method", action="store_true", help="skip _foo()")
     args = parser.parse_args(argv)
@@ -17,7 +17,7 @@ def run(
     *,
     target_list,
     only_this=False,
-    only_this_module=False,
+    show_all=False,
     skip_special_method=False,
     skip_private_method=False
 ):
@@ -53,11 +53,9 @@ def run(
                     if where == builtins:
                         continue
 
-                    if only_this_module and where != target.__name__:
-                        continue
-
-                    _inspect(member)
-                    print("----------------------------------------", file=sys.stdout)
+                    if show_all or where == target.__name__:
+                        _inspect(member)
+                        print("----------------------------------------", file=sys.stdout)
         else:
             print(
                 f"sorry {path} is not class (type={type(target)}, repr={target})", file=sys.stderr

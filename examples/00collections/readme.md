@@ -1,5 +1,5 @@
 ```
-pyinspect --only-this-module collections
+pyinspect collections
 00:collections.deque <- 00:builtins.object
 01:    [method] __add__(self, value, /)
 01:    [method] __bool__(self, /)
@@ -284,7 +284,7 @@ pyinspect --only-this-module collections
 01:    [method] __setitem__(self, key, value)
 01:    [method] clear(self)
 02:        [method] popitem(self)
-01:    [method] pop(self, key, default=<object object at 0x7fe2fbb28050>)
+01:    [method] pop(self, key, default=<object object at 0x7f4d74d1b050>)
 01:    [method] setdefault(self, key, default=None)
 01:    [method] update(*args, **kwds)
 
@@ -330,7 +330,7 @@ pyinspect --only-this-module collections
 01:    [method] __setitem__(self, key, value)
 01:    [method] clear(self)
 02:        [method] popitem(self)
-01:    [method] pop(self, key, default=<object object at 0x7fe2fbb28050>)
+01:    [method] pop(self, key, default=<object object at 0x7f4d74d1b050>)
 01:    [method] setdefault(self, key, default=None)
 01:    [method] update(*args, **kwds)
 

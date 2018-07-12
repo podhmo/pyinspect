@@ -3,5 +3,5 @@ default:
 
 readme:
 	@echo '```'
-	pyinspect --only-this-module wsgiref.simple_server
+	pyinspect wsgiref.simple_server
 	@echo '```'
