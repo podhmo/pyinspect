@@ -1,6 +1,9 @@
-from inspect import signature, classify_class_attrs
+import ast
+import textwrap
+from inspect import signature, classify_class_attrs, getsource
 from logging import getLogger as get_logger
 from collections import namedtuple
+
 logger = get_logger(__name__)
 
 
@@ -32,6 +35,20 @@ class Options(namedtuple("Option", "skip_special_method, skip_private_method, on
             skip_private_method=skip_private_method,
             only_this=only_this,
         )
+
+
+def find_calling_structure(cls, methods):
+    calling_structure = {k: [] for k, _ in methods}
+    for target_method_name, kind in methods:
+        candidates = calling_structure[target_method_name]
+
+        source_code = textwrap.dedent(getsource(getattr(cls, target_method_name)))
+        t = ast.parse(source_code)
+        for node in ast.walk(t):
+            if isinstance(node, ast.Attribute):
+                if node.value.id == "self" and node.attr in calling_structure:
+                    candidates.append(node.attr)
+    return calling_structure
 
 
 def collect_methods(this_cls, options):
