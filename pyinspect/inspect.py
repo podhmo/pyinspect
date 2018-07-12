@@ -98,7 +98,7 @@ def collect_methods(this_cls, *, options):
 def shape_text(this_cls, methods, *, options):
     calling_structure = find_calling_structure(this_cls, methods)
 
-    def _iterate_methods_with_changing_order():
+    def _iterate_methods_toplevel_first_order():
         used = set()
         rdeps = defaultdict(list)
         for name, callings in calling_structure.items():
@@ -120,36 +120,39 @@ def shape_text(this_cls, methods, *, options):
     seen = set()
     kind_mapping = {name: kind for name, kind in methods}
 
-    def _create_description_recursively(name, kind, *, history, level=1):
+    def _iterate_with_nested_level(name, kind, *, history, level=1):
         if name in history:
             return
         history.append(name)
         seen.add(name)
-        prefix = ", OVERRIDE" if any(c for c in this_cls.mro()[1:] if hasattr(c, name)) else ""
-
-        try:
-            content = doc(name, getattr(this_cls, name))
-        except ValueError as e:
-            logger.info(e)
-            return
-
-        description = "[{kind}{prefix}] {content}".format(prefix=prefix, kind=kind, content=content)
-        prefix = INDENT_PREFIX * level
-        if options.show_level:
-            prefix = f"{level:02}:{prefix}"
-        yield _indent(description, prefix=prefix)
+        yield name, kind, level
         for subname in calling_structure[name]:
             subkind = kind_mapping[subname]
             subhistory = history[:]
-            yield from _create_description_recursively(
+            yield from _iterate_with_nested_level(
                 subname, subkind, history=subhistory, level=level + 1
             )
 
     method_docs = []
-    for name, kind in _iterate_methods_with_changing_order():
+    for name, kind in _iterate_methods_toplevel_first_order():
         if name in seen:
             continue
-        method_docs.extend(_create_description_recursively(name, kind, history=[]))
+        for name, kind, level in _iterate_with_nested_level(name, kind, history=[]):
+            prefix = ", OVERRIDE" if any(c for c in this_cls.mro()[1:] if hasattr(c, name)) else ""
+
+            try:
+                content = doc(name, getattr(this_cls, name))
+            except ValueError as e:
+                logger.info(e)
+                continue
+
+            description = "[{kind}{prefix}] {content}".format(
+                prefix=prefix, kind=kind, content=content
+            )
+            prefix = INDENT_PREFIX * level
+            if options.show_level:
+                prefix = f"{level:02}:{prefix}"
+            method_docs.append(_indent(description, prefix=prefix))
 
     relation = " <- ".join([f"{cls.__module__}.{cls.__name__}" for cls in this_cls.mro()])
     if options.show_level:
