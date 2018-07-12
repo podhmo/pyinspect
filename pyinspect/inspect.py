@@ -1,13 +1,21 @@
 import ast
 import textwrap
-from inspect import signature, classify_class_attrs, getsource
+from inspect import (
+    signature,
+    classify_class_attrs,
+    getsource,
+)
+from collections import (
+    namedtuple,
+    defaultdict,
+)
 from logging import getLogger as get_logger
-from collections import namedtuple
 
 logger = get_logger(__name__)
+INDENT_PREFIX = '    '
 
 
-def _indent(text, prefix='    '):
+def _indent(text, prefix=INDENT_PREFIX):
     """Indent text by prepending a given prefix to each line."""
     if not text:
         return ''
@@ -72,25 +80,62 @@ def collect_methods(this_cls, options):
 
 
 def shape_text(this_cls, methods):
-    method_docs = []
-    for name, kind in methods:
-        if "method" not in kind:
-            continue
+    calling_structure = find_calling_structure(this_cls, methods)
+
+    def _iterate_methods_with_changing_order():
+        used = set()
+        rdeps = defaultdict(list)
+        for name, callings in calling_structure.items():
+            for subname in callings:
+                rdeps[subname].append(name)
+
+        for name, kind in methods:
+            is_toplevel = name not in rdeps
+            if is_toplevel:
+                used.add(name)
+                yield name, kind
+
+        for name, kind in methods:
+            if name in used:
+                continue
+            used.add(name)
+            yield name, kind
+
+    seen = set()
+    kind_mapping = {name: kind for name, kind in methods}
+
+    def _create_description_recursively(name, kind, *, history, level=1):
+        if name in history:
+            return
+        history.append(name)
+        seen.add(name)
         prefix = ", OVERRIDE" if any(c for c in this_cls.mro()[1:] if hasattr(c, name)) else ""
 
         try:
             content = doc(name, getattr(this_cls, name))
         except ValueError as e:
             logger.info(e)
+            return
+
+        description = "[{kind}{prefix}] {content}".format(prefix=prefix, kind=kind, content=content)
+
+        yield _indent(description, prefix=INDENT_PREFIX * level)
+        for subname in calling_structure[name]:
+            subkind = kind_mapping[subname]
+            subhistory = history[:]
+            yield from _create_description_recursively(
+                subname, subkind, history=subhistory, level=level + 1
+            )
+
+    method_docs = []
+    for name, kind in _iterate_methods_with_changing_order():
+        if name in seen:
             continue
+        method_docs.extend(_create_description_recursively(name, kind, history=[]))
 
-        method_docs.append(
-            "[{kind}{prefix}] {content}".format(prefix=prefix, kind=kind, content=content)
-        )
-
-    content = _indent("\n".join(method_docs))
     relation = " <- ".join([f"{cls.__module__}.{cls.__name__}" for cls in this_cls.mro()])
-    return "\n".join([relation, content]).rstrip("\n")
+    body = "\n".join(method_docs)
+    return "\n".join([relation, body]).rstrip("\n")
 
 
 def inspect(target, *, options, io=None):
