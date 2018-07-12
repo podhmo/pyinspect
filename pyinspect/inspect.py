@@ -145,7 +145,7 @@ def shape_text(this_cls, methods):
             continue
         method_docs.extend(_create_description_recursively(name, kind, history=[]))
 
-    relation = " <- ".join([f"{cls.__module__}.{cls.__name__}" for cls in this_cls.mro()])
+    relation = " <- ".join([f"00:{cls.__module__}.{cls.__name__}" for cls in this_cls.mro()])
     body = "\n".join(method_docs)
     return "\n".join([relation, body]).rstrip("\n")
 

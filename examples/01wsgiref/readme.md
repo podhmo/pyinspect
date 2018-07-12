@@ -1,9 +1,9 @@
 ```
 pyinspect --only-this-module wsgiref.simple_server
-wsgiref.simple_server.ServerHandler <- wsgiref.handlers.SimpleHandler <- wsgiref.handlers.BaseHandler <- builtins.object
+00:wsgiref.simple_server.ServerHandler <- 00:wsgiref.handlers.SimpleHandler <- 00:wsgiref.handlers.BaseHandler <- 00:builtins.object
 01:    [method, OVERRIDE] close(self)
 
-wsgiref.handlers.SimpleHandler <- wsgiref.handlers.BaseHandler <- builtins.object
+00:wsgiref.handlers.SimpleHandler <- 00:wsgiref.handlers.BaseHandler <- 00:builtins.object
 01:    [method, OVERRIDE] __init__(self, stdin, stdout, stderr, environ, multithread=True, multiprocess=False)
 01:    [method, OVERRIDE] _write(self, data)
 01:    [method, OVERRIDE] add_cgi_vars(self)
@@ -11,7 +11,7 @@ wsgiref.handlers.SimpleHandler <- wsgiref.handlers.BaseHandler <- builtins.objec
 01:    [method, OVERRIDE] get_stdin(self)
 01:    [method, OVERRIDE] _flush(self)
 
-wsgiref.handlers.BaseHandler <- builtins.object
+00:wsgiref.handlers.BaseHandler <- 00:builtins.object
 01:    [method] run(self, application)
 02:        [method] setup_environ(self)
 03:            [method] add_cgi_vars(self)
@@ -99,16 +99,16 @@ wsgiref.handlers.BaseHandler <- builtins.object
 02:        [method] close(self)
 
 ----------------------------------------
-wsgiref.simple_server.WSGIServer <- http.server.HTTPServer <- socketserver.TCPServer <- socketserver.BaseServer <- builtins.object
+00:wsgiref.simple_server.WSGIServer <- 00:http.server.HTTPServer <- 00:socketserver.TCPServer <- 00:socketserver.BaseServer <- 00:builtins.object
 01:    [method] get_app(self)
 01:    [method, OVERRIDE] server_bind(self)
 02:        [method] setup_environ(self)
 01:    [method] set_app(self, application)
 
-http.server.HTTPServer <- socketserver.TCPServer <- socketserver.BaseServer <- builtins.object
+00:http.server.HTTPServer <- 00:socketserver.TCPServer <- 00:socketserver.BaseServer <- 00:builtins.object
 01:    [method, OVERRIDE] server_bind(self)
 
-socketserver.TCPServer <- socketserver.BaseServer <- builtins.object
+00:socketserver.TCPServer <- 00:socketserver.BaseServer <- 00:builtins.object
 01:    [method, OVERRIDE] __init__(self, server_address, RequestHandlerClass, bind_and_activate=True)
 02:        [method] server_bind(self)
 02:        [method, OVERRIDE] server_activate(self)
@@ -118,7 +118,7 @@ socketserver.TCPServer <- socketserver.BaseServer <- builtins.object
 01:    [method, OVERRIDE] shutdown_request(self, request)
 02:        [method, OVERRIDE] close_request(self, request)
 
-socketserver.BaseServer <- builtins.object
+00:socketserver.BaseServer <- 00:builtins.object
 01:    [method] __enter__(self)
 01:    [method] __exit__(self, *args)
 02:        [method] server_close(self)
@@ -149,12 +149,12 @@ socketserver.BaseServer <- builtins.object
 01:    [method] shutdown(self)
 
 ----------------------------------------
-wsgiref.simple_server.WSGIRequestHandler <- http.server.BaseHTTPRequestHandler <- socketserver.StreamRequestHandler <- socketserver.BaseRequestHandler <- builtins.object
+00:wsgiref.simple_server.WSGIRequestHandler <- 00:http.server.BaseHTTPRequestHandler <- 00:socketserver.StreamRequestHandler <- 00:socketserver.BaseRequestHandler <- 00:builtins.object
 01:    [method, OVERRIDE] handle(self)
 02:        [method] get_stderr(self)
 02:        [method] get_environ(self)
 
-http.server.BaseHTTPRequestHandler <- socketserver.StreamRequestHandler <- socketserver.BaseRequestHandler <- builtins.object
+00:http.server.BaseHTTPRequestHandler <- 00:socketserver.StreamRequestHandler <- 00:socketserver.BaseRequestHandler <- 00:builtins.object
 01:    [method, OVERRIDE] handle(self)
 02:        [method] handle_one_request(self)
 03:            [method] send_error(self, code, message=None, explain=None)
@@ -201,11 +201,11 @@ http.server.BaseHTTPRequestHandler <- socketserver.StreamRequestHandler <- socke
 05:                    [method] address_string(self)
 05:                    [method] log_date_time_string(self)
 
-socketserver.StreamRequestHandler <- socketserver.BaseRequestHandler <- builtins.object
+00:socketserver.StreamRequestHandler <- 00:socketserver.BaseRequestHandler <- 00:builtins.object
 01:    [method, OVERRIDE] finish(self)
 01:    [method, OVERRIDE] setup(self)
 
-socketserver.BaseRequestHandler <- builtins.object
+00:socketserver.BaseRequestHandler <- 00:builtins.object
 01:    [method, OVERRIDE] __init__(self, request, client_address, server)
 02:        [method] setup(self)
 02:        [method] handle(self)
