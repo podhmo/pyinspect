@@ -1,6 +1,6 @@
 ```
-pyinspect jupyter_console.app:ZMQTerminalIPythonApp
-00:jupyter_console.app.ZMQTerminalIPythonApp <- 00:jupyter_core.application.JupyterApp <- 00:traitlets.config.application.Application <- 00:traitlets.config.configurable.SingletonConfigurable <- 00:jupyter_client.consoleapp.JupyterConsoleApp <- 00:jupyter_client.connect.ConnectionFileMixin <- 00:traitlets.config.configurable.LoggingConfigurable <- 00:traitlets.config.configurable.Configurable <- 00:traitlets.traitlets.HasTraits <- 00:traitlets.traitlets.HasDescriptors <- 00:builtins.object
+pyinspect -n jupyter_console.app:ZMQTerminalIPythonApp
+00:jupyter_console.app.ZMQTerminalIPythonApp <- jupyter_core.application.JupyterApp <- traitlets.config.application.Application <- traitlets.config.configurable.SingletonConfigurable <- jupyter_client.consoleapp.JupyterConsoleApp <- jupyter_client.connect.ConnectionFileMixin <- traitlets.config.configurable.LoggingConfigurable <- traitlets.config.configurable.Configurable <- traitlets.traitlets.HasTraits <- traitlets.traitlets.HasDescriptors <- builtins.object
 01:    [method] init_gui_pylab(self)
 01:    [method, OVERRIDE] initialize(self, argv=None)
 02:        [method] init_shell(self)
@@ -9,7 +9,7 @@ pyinspect jupyter_console.app:ZMQTerminalIPythonApp
 01:    [method, OVERRIDE] parse_command_line(self, argv=None)
 01:    [method, OVERRIDE] start(self)
 
-00:jupyter_core.application.JupyterApp <- 00:traitlets.config.application.Application <- 00:traitlets.config.configurable.SingletonConfigurable <- 00:traitlets.config.configurable.LoggingConfigurable <- 00:traitlets.config.configurable.Configurable <- 00:traitlets.traitlets.HasTraits <- 00:traitlets.traitlets.HasDescriptors <- 00:builtins.object
+00:jupyter_core.application.JupyterApp <- traitlets.config.application.Application <- traitlets.config.configurable.SingletonConfigurable <- traitlets.config.configurable.LoggingConfigurable <- traitlets.config.configurable.Configurable <- traitlets.traitlets.HasTraits <- traitlets.traitlets.HasDescriptors <- builtins.object
 01:    [method] _config_dir_default(self)
 01:    [method] _config_file_name_default(self)
 01:    [method] _data_dir_default(self)
@@ -25,7 +25,7 @@ pyinspect jupyter_console.app:ZMQTerminalIPythonApp
 01:    [method, OVERRIDE] start(self)
 02:        [method] write_default_config(self)
 
-00:traitlets.config.application.Application <- 00:traitlets.config.configurable.SingletonConfigurable <- 00:traitlets.config.configurable.LoggingConfigurable <- 00:traitlets.config.configurable.Configurable <- 00:traitlets.traitlets.HasTraits <- 00:traitlets.traitlets.HasDescriptors <- 00:builtins.object
+00:traitlets.config.application.Application <- traitlets.config.configurable.SingletonConfigurable <- traitlets.config.configurable.LoggingConfigurable <- traitlets.config.configurable.Configurable <- traitlets.traitlets.HasTraits <- traitlets.traitlets.HasDescriptors <- builtins.object
 01:    [method, OVERRIDE] __init__(self, **kwargs)
 01:    [method] document_config_options(self)
 02:        [method] _classes_inc_parents(self)
@@ -50,14 +50,14 @@ pyinspect jupyter_console.app:ZMQTerminalIPythonApp
 02:        [class method] _load_config_files(basefilename, path=None, log=None, raise_config_file_errors=False)
 01:    [method] start(self)
 
-00:traitlets.config.configurable.SingletonConfigurable <- 00:traitlets.config.configurable.LoggingConfigurable <- 00:traitlets.config.configurable.Configurable <- 00:traitlets.traitlets.HasTraits <- 00:traitlets.traitlets.HasDescriptors <- 00:builtins.object
+00:traitlets.config.configurable.SingletonConfigurable <- traitlets.config.configurable.LoggingConfigurable <- traitlets.config.configurable.Configurable <- traitlets.traitlets.HasTraits <- traitlets.traitlets.HasDescriptors <- builtins.object
 01:    [class method] clear_instance()
 02:        [class method] _walk_mro()
 02:        [class method] initialized()
 01:    [class method] instance(*args, **kwargs)
 02:        [class method] _walk_mro()
 
-00:jupyter_client.consoleapp.JupyterConsoleApp <- 00:jupyter_client.connect.ConnectionFileMixin <- 00:traitlets.config.configurable.LoggingConfigurable <- 00:traitlets.config.configurable.Configurable <- 00:traitlets.traitlets.HasTraits <- 00:traitlets.traitlets.HasDescriptors <- 00:builtins.object
+00:jupyter_client.consoleapp.JupyterConsoleApp <- jupyter_client.connect.ConnectionFileMixin <- traitlets.config.configurable.LoggingConfigurable <- traitlets.config.configurable.Configurable <- traitlets.traitlets.HasTraits <- traitlets.traitlets.HasDescriptors <- builtins.object
 01:    [method] _connection_file_default(self)
 01:    [method] _new_connection_file(self)
 01:    [method] build_kernel_argv(self, argv=None)
@@ -67,7 +67,7 @@ pyinspect jupyter_console.app:ZMQTerminalIPythonApp
 02:        [method] init_kernel_manager(self)
 02:        [method] init_kernel_client(self)
 
-00:jupyter_client.connect.ConnectionFileMixin <- 00:traitlets.config.configurable.LoggingConfigurable <- 00:traitlets.config.configurable.Configurable <- 00:traitlets.traitlets.HasTraits <- 00:traitlets.traitlets.HasDescriptors <- 00:builtins.object
+00:jupyter_client.connect.ConnectionFileMixin <- traitlets.config.configurable.LoggingConfigurable <- traitlets.config.configurable.Configurable <- traitlets.traitlets.HasTraits <- traitlets.traitlets.HasDescriptors <- builtins.object
 01:    [method] _data_dir_default(self)
 01:    [method] _ip_changed(self, name, old, new)
 01:    [method] _session_default(self)
@@ -98,9 +98,9 @@ pyinspect jupyter_console.app:ZMQTerminalIPythonApp
 01:    [method] write_connection_file(self)
 02:        [method] _record_random_port_names(self)
 
-00:traitlets.config.configurable.LoggingConfigurable <- 00:traitlets.config.configurable.Configurable <- 00:traitlets.traitlets.HasTraits <- 00:traitlets.traitlets.HasDescriptors <- 00:builtins.object
+00:traitlets.config.configurable.LoggingConfigurable <- traitlets.config.configurable.Configurable <- traitlets.traitlets.HasTraits <- traitlets.traitlets.HasDescriptors <- builtins.object
 
-00:traitlets.config.configurable.Configurable <- 00:traitlets.traitlets.HasTraits <- 00:traitlets.traitlets.HasDescriptors <- 00:builtins.object
+00:traitlets.config.configurable.Configurable <- traitlets.traitlets.HasTraits <- traitlets.traitlets.HasDescriptors <- builtins.object
 01:    [method, OVERRIDE] __init__(self, **kwargs)
 02:        [method] _load_config(self, cfg, section_names=None, traits=None)
 03:            [method] _find_my_config(self, cfg)
@@ -117,7 +117,7 @@ pyinspect jupyter_console.app:ZMQTerminalIPythonApp
 04:                [class method] section_names()
 03:            [class method] section_names()
 
-00:traitlets.traitlets.HasTraits <- 00:traitlets.traitlets.HasDescriptors <- 00:builtins.object
+00:traitlets.traitlets.HasTraits <- traitlets.traitlets.HasDescriptors <- builtins.object
 01:    [method] __getstate__(self)
 01:    [method, OVERRIDE] __init__(self, *args, **kwargs)
 02:        [method] hold_trait_notifications(self)
@@ -147,7 +147,7 @@ pyinspect jupyter_console.app:ZMQTerminalIPythonApp
 01:    [method] trait_metadata(self, traitname, key, default=None)
 01:    [method] unobserve_all(self, name=traitlets.All)
 
-00:traitlets.traitlets.HasDescriptors <- 00:builtins.object
+00:traitlets.traitlets.HasDescriptors <- builtins.object
 01:    [static method, OVERRIDE] __new__(cls, *args, **kwargs)
 01:    [method] setup_instance(self, *args, **kwargs)
 

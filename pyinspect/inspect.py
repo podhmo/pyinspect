@@ -30,17 +30,21 @@ def doc(name, ob):
     return f"{name}{signature(ob)}"
 
 
-class Options(namedtuple("Option", "skip_special_method, skip_private_method, only_this")):
+class Options(
+    namedtuple("Option", "skip_special_method, skip_private_method, show_level, only_this")
+):
     def __new__(
         self,
         skip_special_method=False,
         skip_private_method=False,
+        show_level=False,
         only_this=False,
     ):  # todo: using dataclasses?
         return super().__new__(
             self,
             skip_special_method=skip_special_method,
             skip_private_method=skip_private_method,
+            show_level=show_level,
             only_this=only_this,
         )
 
@@ -71,7 +75,7 @@ def find_calling_structure(cls, methods, *, method_owners=("self", "cls")):
     return calling_structure
 
 
-def collect_methods(this_cls, options):
+def collect_methods(this_cls, *, options):
     methods = [
         (name, kind) for name, kind, cls, _ in classify_class_attrs(this_cls)
         if cls == this_cls and "method" in kind
@@ -91,7 +95,7 @@ def collect_methods(this_cls, options):
     return methods
 
 
-def shape_text(this_cls, methods):
+def shape_text(this_cls, methods, *, options):
     calling_structure = find_calling_structure(this_cls, methods)
 
     def _iterate_methods_with_changing_order():
@@ -130,8 +134,10 @@ def shape_text(this_cls, methods):
             return
 
         description = "[{kind}{prefix}] {content}".format(prefix=prefix, kind=kind, content=content)
-
-        yield _indent(description, prefix=f"{level:02}:{INDENT_PREFIX * level}")
+        prefix = INDENT_PREFIX * level
+        if options.show_level:
+            prefix = f"{level:02}:{prefix}"
+        yield _indent(description, prefix=prefix)
         for subname in calling_structure[name]:
             subkind = kind_mapping[subname]
             subhistory = history[:]
@@ -145,7 +151,10 @@ def shape_text(this_cls, methods):
             continue
         method_docs.extend(_create_description_recursively(name, kind, history=[]))
 
-    relation = " <- ".join([f"00:{cls.__module__}.{cls.__name__}" for cls in this_cls.mro()])
+    relation = " <- ".join([f"{cls.__module__}.{cls.__name__}" for cls in this_cls.mro()])
+    if options.show_level:
+        relation = f"00:{relation}"
+
     body = "\n".join(method_docs)
     return "\n".join([relation, body]).rstrip("\n")
 
@@ -155,7 +164,7 @@ def inspect(target, *, options, io=None):
         if cls == object:
             break
         methods = collect_methods(cls, options=options)
-        text = shape_text(cls, methods)
+        text = shape_text(cls, methods, options=options)
 
         print(text, file=io)
         print("", file=io)

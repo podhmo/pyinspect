@@ -3,5 +3,5 @@ default:
 
 readme:
 	@echo '```'
-	pyinspect jupyter_console.app:ZMQTerminalIPythonApp
+	pyinspect -n jupyter_console.app:ZMQTerminalIPythonApp
 	@echo '```'

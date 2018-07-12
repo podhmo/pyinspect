@@ -1,6 +1,6 @@
 ```
-pyinspect collections
-00:collections.deque <- 00:builtins.object
+pyinspect -n collections
+00:collections.deque <- builtins.object
 01:    [method] __add__(self, value, /)
 01:    [method] __bool__(self, /)
 01:    [method] __contains__(self, key, /)
@@ -25,12 +25,12 @@ pyinspect collections
 01:    [method] __setitem__(self, key, value, /)
 
 ----------------------------------------
-00:collections.defaultdict <- 00:builtins.dict <- 00:builtins.object
+00:collections.defaultdict <- builtins.dict <- builtins.object
 01:    [method, OVERRIDE] __getattribute__(self, name, /)
 01:    [method, OVERRIDE] __init__(self, /, *args, **kwargs)
 01:    [method, OVERRIDE] __repr__(self, /)
 
-00:builtins.dict <- 00:builtins.object
+00:builtins.dict <- builtins.object
 01:    [method] __contains__(self, key, /)
 01:    [method] __delitem__(self, key, /)
 01:    [method, OVERRIDE] __eq__(self, value, /)
@@ -49,20 +49,20 @@ pyinspect collections
 01:    [method] fromkeys(iterable, value=None, /)
 
 ----------------------------------------
-00:collections._OrderedDictKeysView <- 00:collections.abc.KeysView <- 00:collections.abc.MappingView <- 00:collections.abc.Set <- 00:collections.abc.Collection <- 00:collections.abc.Sized <- 00:collections.abc.Iterable <- 00:collections.abc.Container <- 00:builtins.object
+00:collections._OrderedDictKeysView <- collections.abc.KeysView <- collections.abc.MappingView <- collections.abc.Set <- collections.abc.Collection <- collections.abc.Sized <- collections.abc.Iterable <- collections.abc.Container <- builtins.object
 01:    [method] __reversed__(self)
 
-00:collections.abc.KeysView <- 00:collections.abc.MappingView <- 00:collections.abc.Set <- 00:collections.abc.Collection <- 00:collections.abc.Sized <- 00:collections.abc.Iterable <- 00:collections.abc.Container <- 00:builtins.object
+00:collections.abc.KeysView <- collections.abc.MappingView <- collections.abc.Set <- collections.abc.Collection <- collections.abc.Sized <- collections.abc.Iterable <- collections.abc.Container <- builtins.object
 01:    [method, OVERRIDE] __contains__(self, key)
 01:    [method, OVERRIDE] __iter__(self)
 01:    [class method, OVERRIDE] _from_iterable(it)
 
-00:collections.abc.MappingView <- 00:collections.abc.Sized <- 00:builtins.object
+00:collections.abc.MappingView <- collections.abc.Sized <- builtins.object
 01:    [method, OVERRIDE] __init__(self, mapping)
 01:    [method, OVERRIDE] __len__(self)
 01:    [method, OVERRIDE] __repr__(self)
 
-00:collections.abc.Set <- 00:collections.abc.Collection <- 00:collections.abc.Sized <- 00:collections.abc.Iterable <- 00:collections.abc.Container <- 00:builtins.object
+00:collections.abc.Set <- collections.abc.Collection <- collections.abc.Sized <- collections.abc.Iterable <- collections.abc.Container <- builtins.object
 01:    [method] __and__(self, other)
 02:        [class method] _from_iterable(it)
 01:    [method, OVERRIDE] __eq__(self, other)
@@ -88,36 +88,36 @@ pyinspect collections
 01:    [method] _hash(self)
 01:    [method] isdisjoint(self, other)
 
-00:collections.abc.Collection <- 00:collections.abc.Sized <- 00:collections.abc.Iterable <- 00:collections.abc.Container <- 00:builtins.object
+00:collections.abc.Collection <- collections.abc.Sized <- collections.abc.Iterable <- collections.abc.Container <- builtins.object
 01:    [class method, OVERRIDE] __subclasshook__(C)
 
-00:collections.abc.Sized <- 00:builtins.object
+00:collections.abc.Sized <- builtins.object
 01:    [method] __len__(self)
 01:    [class method, OVERRIDE] __subclasshook__(C)
 
-00:collections.abc.Iterable <- 00:builtins.object
+00:collections.abc.Iterable <- builtins.object
 01:    [method] __iter__(self)
 01:    [class method, OVERRIDE] __subclasshook__(C)
 
-00:collections.abc.Container <- 00:builtins.object
+00:collections.abc.Container <- builtins.object
 01:    [method] __contains__(self, x)
 01:    [class method, OVERRIDE] __subclasshook__(C)
 
 ----------------------------------------
-00:collections._OrderedDictItemsView <- 00:collections.abc.ItemsView <- 00:collections.abc.MappingView <- 00:collections.abc.Set <- 00:collections.abc.Collection <- 00:collections.abc.Sized <- 00:collections.abc.Iterable <- 00:collections.abc.Container <- 00:builtins.object
+00:collections._OrderedDictItemsView <- collections.abc.ItemsView <- collections.abc.MappingView <- collections.abc.Set <- collections.abc.Collection <- collections.abc.Sized <- collections.abc.Iterable <- collections.abc.Container <- builtins.object
 01:    [method] __reversed__(self)
 
-00:collections.abc.ItemsView <- 00:collections.abc.MappingView <- 00:collections.abc.Set <- 00:collections.abc.Collection <- 00:collections.abc.Sized <- 00:collections.abc.Iterable <- 00:collections.abc.Container <- 00:builtins.object
+00:collections.abc.ItemsView <- collections.abc.MappingView <- collections.abc.Set <- collections.abc.Collection <- collections.abc.Sized <- collections.abc.Iterable <- collections.abc.Container <- builtins.object
 01:    [method, OVERRIDE] __contains__(self, item)
 01:    [method, OVERRIDE] __iter__(self)
 01:    [class method, OVERRIDE] _from_iterable(it)
 
-00:collections.abc.MappingView <- 00:collections.abc.Sized <- 00:builtins.object
+00:collections.abc.MappingView <- collections.abc.Sized <- builtins.object
 01:    [method, OVERRIDE] __init__(self, mapping)
 01:    [method, OVERRIDE] __len__(self)
 01:    [method, OVERRIDE] __repr__(self)
 
-00:collections.abc.Set <- 00:collections.abc.Collection <- 00:collections.abc.Sized <- 00:collections.abc.Iterable <- 00:collections.abc.Container <- 00:builtins.object
+00:collections.abc.Set <- collections.abc.Collection <- collections.abc.Sized <- collections.abc.Iterable <- collections.abc.Container <- builtins.object
 01:    [method] __and__(self, other)
 02:        [class method] _from_iterable(it)
 01:    [method, OVERRIDE] __eq__(self, other)
@@ -143,43 +143,43 @@ pyinspect collections
 01:    [method] _hash(self)
 01:    [method] isdisjoint(self, other)
 
-00:collections.abc.Collection <- 00:collections.abc.Sized <- 00:collections.abc.Iterable <- 00:collections.abc.Container <- 00:builtins.object
+00:collections.abc.Collection <- collections.abc.Sized <- collections.abc.Iterable <- collections.abc.Container <- builtins.object
 01:    [class method, OVERRIDE] __subclasshook__(C)
 
-00:collections.abc.Sized <- 00:builtins.object
+00:collections.abc.Sized <- builtins.object
 01:    [method] __len__(self)
 01:    [class method, OVERRIDE] __subclasshook__(C)
 
-00:collections.abc.Iterable <- 00:builtins.object
+00:collections.abc.Iterable <- builtins.object
 01:    [method] __iter__(self)
 01:    [class method, OVERRIDE] __subclasshook__(C)
 
-00:collections.abc.Container <- 00:builtins.object
+00:collections.abc.Container <- builtins.object
 01:    [method] __contains__(self, x)
 01:    [class method, OVERRIDE] __subclasshook__(C)
 
 ----------------------------------------
-00:collections._OrderedDictValuesView <- 00:collections.abc.ValuesView <- 00:collections.abc.MappingView <- 00:collections.abc.Sized <- 00:builtins.object
+00:collections._OrderedDictValuesView <- collections.abc.ValuesView <- collections.abc.MappingView <- collections.abc.Sized <- builtins.object
 01:    [method] __reversed__(self)
 
-00:collections.abc.ValuesView <- 00:collections.abc.MappingView <- 00:collections.abc.Sized <- 00:builtins.object
+00:collections.abc.ValuesView <- collections.abc.MappingView <- collections.abc.Sized <- builtins.object
 01:    [method] __contains__(self, value)
 01:    [method] __iter__(self)
 
-00:collections.abc.MappingView <- 00:collections.abc.Sized <- 00:builtins.object
+00:collections.abc.MappingView <- collections.abc.Sized <- builtins.object
 01:    [method, OVERRIDE] __init__(self, mapping)
 01:    [method, OVERRIDE] __len__(self)
 01:    [method, OVERRIDE] __repr__(self)
 
-00:collections.abc.Sized <- 00:builtins.object
+00:collections.abc.Sized <- builtins.object
 01:    [method] __len__(self)
 01:    [class method, OVERRIDE] __subclasshook__(C)
 
 ----------------------------------------
-00:collections._Link <- 00:builtins.object
+00:collections._Link <- builtins.object
 
 ----------------------------------------
-00:collections.OrderedDict <- 00:builtins.dict <- 00:builtins.object
+00:collections.OrderedDict <- builtins.dict <- builtins.object
 01:    [method, OVERRIDE] __delitem__(self, key, /)
 01:    [method, OVERRIDE] __eq__(self, value, /)
 01:    [method, OVERRIDE] __ge__(self, value, /)
@@ -194,7 +194,7 @@ pyinspect collections
 01:    [method, OVERRIDE] __setitem__(self, key, value, /)
 01:    [method, OVERRIDE] popitem(self, /, last=True)
 
-00:builtins.dict <- 00:builtins.object
+00:builtins.dict <- builtins.object
 01:    [method] __contains__(self, key, /)
 01:    [method] __delitem__(self, key, /)
 01:    [method, OVERRIDE] __eq__(self, value, /)
@@ -213,7 +213,7 @@ pyinspect collections
 01:    [method] fromkeys(iterable, value=None, /)
 
 ----------------------------------------
-00:collections.Counter <- 00:builtins.dict <- 00:builtins.object
+00:collections.Counter <- builtins.dict <- builtins.object
 01:    [method] __add__(self, other)
 01:    [method] __and__(self, other)
 01:    [method, OVERRIDE] __delitem__(self, elem)
@@ -240,7 +240,7 @@ pyinspect collections
 01:    [class method, OVERRIDE] fromkeys(iterable, v=None)
 01:    [method] subtract(*args, **kwds)
 
-00:builtins.dict <- 00:builtins.object
+00:builtins.dict <- builtins.object
 01:    [method] __contains__(self, key, /)
 01:    [method] __delitem__(self, key, /)
 01:    [method, OVERRIDE] __eq__(self, value, /)
@@ -259,7 +259,7 @@ pyinspect collections
 01:    [method] fromkeys(iterable, value=None, /)
 
 ----------------------------------------
-00:collections.ChainMap <- 00:collections.abc.MutableMapping <- 00:collections.abc.Mapping <- 00:collections.abc.Collection <- 00:collections.abc.Sized <- 00:collections.abc.Iterable <- 00:collections.abc.Container <- 00:builtins.object
+00:collections.ChainMap <- collections.abc.MutableMapping <- collections.abc.Mapping <- collections.abc.Collection <- collections.abc.Sized <- collections.abc.Iterable <- collections.abc.Container <- builtins.object
 01:    [method] __bool__(self)
 01:    [method, OVERRIDE] __contains__(self, key)
 01:    [method] __copy__(self)
@@ -279,16 +279,16 @@ pyinspect collections
 01:    [method, OVERRIDE] pop(self, key, *args)
 01:    [method, OVERRIDE] popitem(self)
 
-00:collections.abc.MutableMapping <- 00:collections.abc.Mapping <- 00:collections.abc.Collection <- 00:collections.abc.Sized <- 00:collections.abc.Iterable <- 00:collections.abc.Container <- 00:builtins.object
+00:collections.abc.MutableMapping <- collections.abc.Mapping <- collections.abc.Collection <- collections.abc.Sized <- collections.abc.Iterable <- collections.abc.Container <- builtins.object
 01:    [method] __delitem__(self, key)
 01:    [method] __setitem__(self, key, value)
 01:    [method] clear(self)
 02:        [method] popitem(self)
-01:    [method] pop(self, key, default=<object object at 0x7f4d74d1b050>)
+01:    [method] pop(self, key, default=<object object at 0x7fda41181050>)
 01:    [method] setdefault(self, key, default=None)
 01:    [method] update(*args, **kwds)
 
-00:collections.abc.Mapping <- 00:collections.abc.Collection <- 00:collections.abc.Sized <- 00:collections.abc.Iterable <- 00:collections.abc.Container <- 00:builtins.object
+00:collections.abc.Mapping <- collections.abc.Collection <- collections.abc.Sized <- collections.abc.Iterable <- collections.abc.Container <- builtins.object
 01:    [method, OVERRIDE] __contains__(self, key)
 01:    [method, OVERRIDE] __eq__(self, other)
 02:        [method] items(self)
@@ -297,23 +297,23 @@ pyinspect collections
 01:    [method] keys(self)
 01:    [method] values(self)
 
-00:collections.abc.Collection <- 00:collections.abc.Sized <- 00:collections.abc.Iterable <- 00:collections.abc.Container <- 00:builtins.object
+00:collections.abc.Collection <- collections.abc.Sized <- collections.abc.Iterable <- collections.abc.Container <- builtins.object
 01:    [class method, OVERRIDE] __subclasshook__(C)
 
-00:collections.abc.Sized <- 00:builtins.object
+00:collections.abc.Sized <- builtins.object
 01:    [method] __len__(self)
 01:    [class method, OVERRIDE] __subclasshook__(C)
 
-00:collections.abc.Iterable <- 00:builtins.object
+00:collections.abc.Iterable <- builtins.object
 01:    [method] __iter__(self)
 01:    [class method, OVERRIDE] __subclasshook__(C)
 
-00:collections.abc.Container <- 00:builtins.object
+00:collections.abc.Container <- builtins.object
 01:    [method] __contains__(self, x)
 01:    [class method, OVERRIDE] __subclasshook__(C)
 
 ----------------------------------------
-00:collections.UserDict <- 00:collections.abc.MutableMapping <- 00:collections.abc.Mapping <- 00:collections.abc.Collection <- 00:collections.abc.Sized <- 00:collections.abc.Iterable <- 00:collections.abc.Container <- 00:builtins.object
+00:collections.UserDict <- collections.abc.MutableMapping <- collections.abc.Mapping <- collections.abc.Collection <- collections.abc.Sized <- collections.abc.Iterable <- collections.abc.Container <- builtins.object
 01:    [method, OVERRIDE] __contains__(self, key)
 01:    [method, OVERRIDE] __delitem__(self, key)
 01:    [method, OVERRIDE] __getitem__(self, key)
@@ -325,16 +325,16 @@ pyinspect collections
 01:    [method] copy(self)
 01:    [class method] fromkeys(iterable, value=None)
 
-00:collections.abc.MutableMapping <- 00:collections.abc.Mapping <- 00:collections.abc.Collection <- 00:collections.abc.Sized <- 00:collections.abc.Iterable <- 00:collections.abc.Container <- 00:builtins.object
+00:collections.abc.MutableMapping <- collections.abc.Mapping <- collections.abc.Collection <- collections.abc.Sized <- collections.abc.Iterable <- collections.abc.Container <- builtins.object
 01:    [method] __delitem__(self, key)
 01:    [method] __setitem__(self, key, value)
 01:    [method] clear(self)
 02:        [method] popitem(self)
-01:    [method] pop(self, key, default=<object object at 0x7f4d74d1b050>)
+01:    [method] pop(self, key, default=<object object at 0x7fda41181050>)
 01:    [method] setdefault(self, key, default=None)
 01:    [method] update(*args, **kwds)
 
-00:collections.abc.Mapping <- 00:collections.abc.Collection <- 00:collections.abc.Sized <- 00:collections.abc.Iterable <- 00:collections.abc.Container <- 00:builtins.object
+00:collections.abc.Mapping <- collections.abc.Collection <- collections.abc.Sized <- collections.abc.Iterable <- collections.abc.Container <- builtins.object
 01:    [method, OVERRIDE] __contains__(self, key)
 01:    [method, OVERRIDE] __eq__(self, other)
 02:        [method] items(self)
@@ -343,23 +343,23 @@ pyinspect collections
 01:    [method] keys(self)
 01:    [method] values(self)
 
-00:collections.abc.Collection <- 00:collections.abc.Sized <- 00:collections.abc.Iterable <- 00:collections.abc.Container <- 00:builtins.object
+00:collections.abc.Collection <- collections.abc.Sized <- collections.abc.Iterable <- collections.abc.Container <- builtins.object
 01:    [class method, OVERRIDE] __subclasshook__(C)
 
-00:collections.abc.Sized <- 00:builtins.object
+00:collections.abc.Sized <- builtins.object
 01:    [method] __len__(self)
 01:    [class method, OVERRIDE] __subclasshook__(C)
 
-00:collections.abc.Iterable <- 00:builtins.object
+00:collections.abc.Iterable <- builtins.object
 01:    [method] __iter__(self)
 01:    [class method, OVERRIDE] __subclasshook__(C)
 
-00:collections.abc.Container <- 00:builtins.object
+00:collections.abc.Container <- builtins.object
 01:    [method] __contains__(self, x)
 01:    [class method, OVERRIDE] __subclasshook__(C)
 
 ----------------------------------------
-00:collections.UserList <- 00:collections.abc.MutableSequence <- 00:collections.abc.Sequence <- 00:collections.abc.Reversible <- 00:collections.abc.Collection <- 00:collections.abc.Sized <- 00:collections.abc.Iterable <- 00:collections.abc.Container <- 00:builtins.object
+00:collections.UserList <- collections.abc.MutableSequence <- collections.abc.Sequence <- collections.abc.Reversible <- collections.abc.Collection <- collections.abc.Sized <- collections.abc.Iterable <- collections.abc.Container <- builtins.object
 01:    [method] _UserList__cast(self, other)
 01:    [method] __add__(self, other)
 01:    [method, OVERRIDE] __contains__(self, item)
@@ -391,7 +391,7 @@ pyinspect collections
 01:    [method, OVERRIDE] reverse(self)
 01:    [method] sort(self, *args, **kwds)
 
-00:collections.abc.MutableSequence <- 00:collections.abc.Sequence <- 00:collections.abc.Reversible <- 00:collections.abc.Collection <- 00:collections.abc.Sized <- 00:collections.abc.Iterable <- 00:collections.abc.Container <- 00:builtins.object
+00:collections.abc.MutableSequence <- collections.abc.Sequence <- collections.abc.Reversible <- collections.abc.Collection <- collections.abc.Sized <- collections.abc.Iterable <- collections.abc.Container <- builtins.object
 01:    [method] __delitem__(self, index)
 01:    [method] __iadd__(self, values)
 02:        [method] extend(self, values)
@@ -403,7 +403,7 @@ pyinspect collections
 01:    [method] remove(self, value)
 01:    [method] reverse(self)
 
-00:collections.abc.Sequence <- 00:collections.abc.Reversible <- 00:collections.abc.Collection <- 00:collections.abc.Sized <- 00:collections.abc.Iterable <- 00:collections.abc.Container <- 00:builtins.object
+00:collections.abc.Sequence <- collections.abc.Reversible <- collections.abc.Collection <- collections.abc.Sized <- collections.abc.Iterable <- collections.abc.Container <- builtins.object
 01:    [method, OVERRIDE] __contains__(self, value)
 01:    [method] __getitem__(self, index)
 01:    [method, OVERRIDE] __iter__(self)
@@ -411,27 +411,27 @@ pyinspect collections
 01:    [method] count(self, value)
 01:    [method] index(self, value, start=0, stop=None)
 
-00:collections.abc.Reversible <- 00:collections.abc.Iterable <- 00:builtins.object
+00:collections.abc.Reversible <- collections.abc.Iterable <- builtins.object
 01:    [method] __reversed__(self)
 01:    [class method, OVERRIDE] __subclasshook__(C)
 
-00:collections.abc.Collection <- 00:collections.abc.Sized <- 00:collections.abc.Iterable <- 00:collections.abc.Container <- 00:builtins.object
+00:collections.abc.Collection <- collections.abc.Sized <- collections.abc.Iterable <- collections.abc.Container <- builtins.object
 01:    [class method, OVERRIDE] __subclasshook__(C)
 
-00:collections.abc.Sized <- 00:builtins.object
+00:collections.abc.Sized <- builtins.object
 01:    [method] __len__(self)
 01:    [class method, OVERRIDE] __subclasshook__(C)
 
-00:collections.abc.Iterable <- 00:builtins.object
+00:collections.abc.Iterable <- builtins.object
 01:    [method] __iter__(self)
 01:    [class method, OVERRIDE] __subclasshook__(C)
 
-00:collections.abc.Container <- 00:builtins.object
+00:collections.abc.Container <- builtins.object
 01:    [method] __contains__(self, x)
 01:    [class method, OVERRIDE] __subclasshook__(C)
 
 ----------------------------------------
-00:collections.UserString <- 00:collections.abc.Sequence <- 00:collections.abc.Reversible <- 00:collections.abc.Collection <- 00:collections.abc.Sized <- 00:collections.abc.Iterable <- 00:collections.abc.Container <- 00:builtins.object
+00:collections.UserString <- collections.abc.Sequence <- collections.abc.Reversible <- collections.abc.Collection <- collections.abc.Sized <- collections.abc.Iterable <- collections.abc.Container <- builtins.object
 01:    [method] __add__(self, other)
 01:    [method] __complex__(self)
 01:    [method, OVERRIDE] __contains__(self, char)
@@ -499,7 +499,7 @@ pyinspect collections
 01:    [method] upper(self)
 01:    [method] zfill(self, width)
 
-00:collections.abc.Sequence <- 00:collections.abc.Reversible <- 00:collections.abc.Collection <- 00:collections.abc.Sized <- 00:collections.abc.Iterable <- 00:collections.abc.Container <- 00:builtins.object
+00:collections.abc.Sequence <- collections.abc.Reversible <- collections.abc.Collection <- collections.abc.Sized <- collections.abc.Iterable <- collections.abc.Container <- builtins.object
 01:    [method, OVERRIDE] __contains__(self, value)
 01:    [method] __getitem__(self, index)
 01:    [method, OVERRIDE] __iter__(self)
@@ -507,22 +507,22 @@ pyinspect collections
 01:    [method] count(self, value)
 01:    [method] index(self, value, start=0, stop=None)
 
-00:collections.abc.Reversible <- 00:collections.abc.Iterable <- 00:builtins.object
+00:collections.abc.Reversible <- collections.abc.Iterable <- builtins.object
 01:    [method] __reversed__(self)
 01:    [class method, OVERRIDE] __subclasshook__(C)
 
-00:collections.abc.Collection <- 00:collections.abc.Sized <- 00:collections.abc.Iterable <- 00:collections.abc.Container <- 00:builtins.object
+00:collections.abc.Collection <- collections.abc.Sized <- collections.abc.Iterable <- collections.abc.Container <- builtins.object
 01:    [class method, OVERRIDE] __subclasshook__(C)
 
-00:collections.abc.Sized <- 00:builtins.object
+00:collections.abc.Sized <- builtins.object
 01:    [method] __len__(self)
 01:    [class method, OVERRIDE] __subclasshook__(C)
 
-00:collections.abc.Iterable <- 00:builtins.object
+00:collections.abc.Iterable <- builtins.object
 01:    [method] __iter__(self)
 01:    [class method, OVERRIDE] __subclasshook__(C)
 
-00:collections.abc.Container <- 00:builtins.object
+00:collections.abc.Container <- builtins.object
 01:    [method] __contains__(self, x)
 01:    [class method, OVERRIDE] __subclasshook__(C)
 

@@ -6,7 +6,8 @@ def main(argv=None):
     parser = argparse.ArgumentParser()
     parser.add_argument("target_list", nargs="+")
     parser.add_argument("--only-this", action="store_true")
-    parser.add_argument("--show-all", action="store_true")
+    parser.add_argument("--all", action="store_true")
+    parser.add_argument("-n", "--show-level", action="store_true")
     parser.add_argument("--skip-special-method", action="store_true", help="skip __foo__()")
     parser.add_argument("--skip-private-method", action="store_true", help="skip _foo()")
     args = parser.parse_args(argv)
@@ -17,7 +18,8 @@ def run(
     *,
     target_list,
     only_this=False,
-    show_all=False,
+    all=False,  # xxx: bultins.all is shadowed
+    show_level=False,
     skip_special_method=False,
     skip_private_method=False
 ):
@@ -32,6 +34,7 @@ def run(
             options=inspect_options(
                 skip_special_method=skip_special_method,
                 skip_private_method=skip_private_method,
+                show_level=show_level,
                 only_this=only_this,
             ),
             io=sys.stdout,
@@ -53,7 +56,7 @@ def run(
                     if where == builtins:
                         continue
 
-                    if show_all or where == target.__name__:
+                    if all or where == target.__name__:
                         _inspect(member)
                         print("----------------------------------------", file=sys.stdout)
         else:
