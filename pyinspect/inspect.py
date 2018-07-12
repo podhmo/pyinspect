@@ -34,27 +34,29 @@ class Options(namedtuple("Option", "skip_special_method, skip_private_method, on
         )
 
 
-def collect_attrs(this_cls, options):
-    attrs = [
-        (name, kind) for name, kind, cls, _ in classify_class_attrs(this_cls) if cls == this_cls
+def collect_methods(this_cls, options):
+    methods = [
+        (name, kind) for name, kind, cls, _ in classify_class_attrs(this_cls)
+        if cls == this_cls and "method" in kind
     ]
 
     if options.skip_special_method:
-        attrs = [
-            (name, kind) for name, kind in attrs
+        methods = [
+            (name, kind) for name, kind in methods
             if not (name.startswith("__") and name.endswith("__"))
         ]
 
     if options.skip_private_method:
-        attrs = [
-            (name, kind) for name, kind in attrs if not name.startswith("_") or name.endswith("__")
+        methods = [
+            (name, kind) for name, kind in methods
+            if not name.startswith("_") or name.endswith("__")
         ]
-    return attrs
+    return methods
 
 
-def shape_text(this_cls, attrs):
+def shape_text(this_cls, methods):
     method_docs = []
-    for name, kind in attrs:
+    for name, kind in methods:
         if "method" not in kind:
             continue
         prefix = ", OVERRIDE" if any(c for c in this_cls.mro()[1:] if hasattr(c, name)) else ""
@@ -78,10 +80,8 @@ def inspect(target, *, options, io=None):
     for cls in target.mro():
         if cls == object:
             break
-        text = shape_text(
-            cls,
-            collect_attrs(cls, options=options),
-        )
+        methods = collect_methods(cls, options=options)
+        text = shape_text(cls, methods)
 
         print(text, file=io)
         print("", file=io)
