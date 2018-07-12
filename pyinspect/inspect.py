@@ -47,9 +47,10 @@ class Options(namedtuple("Option", "skip_special_method, skip_private_method, on
 
 def find_calling_structure(cls, methods, *, method_owners=("self", "cls")):
     calling_structure = {k: [] for k, _ in methods}
+    seen_dict = defaultdict(set)  # for dedup
     for target_method_name, kind in methods:
         candidates = calling_structure[target_method_name]
-
+        seen = seen_dict[target_method_name]
         try:
             source_code = textwrap.dedent(getsource(getattr(cls, target_method_name)))
         except TypeError as e:
@@ -63,6 +64,9 @@ def find_calling_structure(cls, methods, *, method_owners=("self", "cls")):
                 if not hasattr(node.value, "id"):
                     continue
                 if node.attr in calling_structure and node.value.id in method_owners:
+                    if node.attr in seen:
+                        continue
+                    seen.add(node.attr)
                     candidates.append(node.attr)
     return calling_structure
 

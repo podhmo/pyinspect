@@ -38,6 +38,24 @@ class Tests(TestCaseWithDebugLogging):
         expected = {"init": ["init_x"], "init_x": ["init_x_z"], "init_x_z": []}
         self.assertDictEqual(got=got, expected=expected)
 
+    def test_dups(self):
+        class F:
+            def init(self, x, *, y=None):
+                self.init_x(x)
+                self.init_x(x)
+
+            def init_x(self, x):
+                self.init_x_z()
+                self.init_x_z()
+                self.init_x_z()
+
+            def init_x_z(self, x):
+                pass
+
+        got = self._callFUT(F)
+        expected = {"init": ["init_x"], "init_x": ["init_x_z"], "init_x_z": []}
+        self.assertDictEqual(got=got, expected=expected)
+
 
 if __name__ == "__main__":
     import unittest
