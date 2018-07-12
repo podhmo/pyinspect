@@ -127,7 +127,7 @@ def shape_text(this_cls, methods):
 
         description = "[{kind}{prefix}] {content}".format(prefix=prefix, kind=kind, content=content)
 
-        yield _indent(description, prefix=INDENT_PREFIX * level)
+        yield _indent(description, prefix=f"{level:02}:{INDENT_PREFIX * level}")
         for subname in calling_structure[name]:
             subkind = kind_mapping[subname]
             subhistory = history[:]
