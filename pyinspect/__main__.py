@@ -13,17 +13,27 @@ def main(argv=None):
     run(**vars(args))
 
 
-def run(*, target_list, only_this=False, only_this_module=False, skip_special_method=False, skip_private_method=False):
+def run(
+    *,
+    target_list,
+    only_this=False,
+    only_this_module=False,
+    skip_special_method=False,
+    skip_private_method=False
+):
     from inspect import isclass, ismodule
     from pyinspect.inspect import inspect
+    from pyinspect.inspect import Options as inspect_options
     import magicalimport
 
     def _inspect(target):
         return inspect(
             target,
-            skip_special_method=skip_special_method,
-            skip_private_method=skip_private_method,
-            only_this=only_this,
+            options=inspect_options(
+                skip_special_method=skip_special_method,
+                skip_private_method=skip_private_method,
+                only_this=only_this,
+            ),
             io=sys.stdout,
         )
 

@@ -1,5 +1,6 @@
 from inspect import signature, classify_class_attrs
 from logging import getLogger as get_logger
+from collections import namedtuple
 logger = get_logger(__name__)
 
 
@@ -18,21 +19,40 @@ def doc(name, ob):
     return f"{name}{signature(ob)}"
 
 
-def shape_text(this_cls, skip_special_method=False, skip_private_method=False):
+class Options(namedtuple("Option", "skip_special_method, skip_private_method, only_this")):
+    def __new__(
+        self,
+        skip_special_method=False,
+        skip_private_method=False,
+        only_this=False,
+    ):  # todo: using dataclasses?
+        return super().__new__(
+            self,
+            skip_special_method=skip_special_method,
+            skip_private_method=skip_private_method,
+            only_this=only_this,
+        )
+
+
+def collect_attrs(this_cls, options):
     attrs = [
         (name, kind) for name, kind, cls, _ in classify_class_attrs(this_cls) if cls == this_cls
     ]
 
-    if skip_special_method:
+    if options.skip_special_method:
         attrs = [
             (name, kind) for name, kind in attrs
             if not (name.startswith("__") and name.endswith("__"))
         ]
 
-    if skip_private_method:
+    if options.skip_private_method:
         attrs = [
             (name, kind) for name, kind in attrs if not name.startswith("_") or name.endswith("__")
         ]
+    return attrs
+
+
+def shape_text(this_cls, attrs):
     method_docs = []
     for name, kind in attrs:
         if "method" not in kind:
@@ -54,16 +74,17 @@ def shape_text(this_cls, skip_special_method=False, skip_private_method=False):
     return "\n".join([relation, content]).rstrip("\n")
 
 
-def inspect(target, io=None, skip_special_method=False, skip_private_method=False, only_this=False):
+def inspect(target, *, options, io=None):
     for cls in target.mro():
         if cls == object:
             break
         text = shape_text(
-            cls, skip_special_method=skip_special_method, skip_private_method=skip_private_method
+            cls,
+            collect_attrs(cls, options=options),
         )
 
         print(text, file=io)
         print("", file=io)
 
-        if only_this:
+        if options.only_this:
             break
