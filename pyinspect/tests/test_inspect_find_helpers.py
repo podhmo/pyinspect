@@ -3,9 +3,9 @@ from pyinspect.tests import TestCaseWithDebugLogging
 
 class Tests(TestCaseWithDebugLogging):
     def _callFUT(self, cls):
-        from pyinspect.inspect import collect_methods, Options
+        from pyinspect.inspect import collect_attrs, Options
         from pyinspect.inspect import find_calling_structure as target_function
-        methods = collect_methods(cls, options=Options())
+        methods = collect_attrs(cls, options=Options())
         return target_function(cls, methods)
 
     def test_simple(self):
