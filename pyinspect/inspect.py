@@ -27,12 +27,14 @@ def _indent(text, prefix=INDENT_PREFIX):
 
 def doc(name, kind, ob):
     if kind == "property":
-        if not hasattr(ob, "fget"):
-            return f"{name}"
-        ob = ob.fget
+        return f"{name}"
 
     # pydoc.plaintext.doc(ob)
-    return f"{name}{signature(ob)}"
+    try:
+        return f"{name}{signature(ob)}"
+    except TypeError as e:
+        logger.info(repr(e))
+        return f"{name}"
 
 
 class Options(
