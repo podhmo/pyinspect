@@ -75,50 +75,50 @@ def find_calling_structure(cls, methods, *, method_owners=("self", "cls")):
     return calling_structure
 
 
-def collect_methods(this_cls, *, options):
-    methods = [
+def collect_attrs(this_cls, *, options):
+    attrs = [
         (name, kind) for name, kind, cls, _ in classify_class_attrs(this_cls)
         if cls == this_cls and "method" in kind
     ]
 
     if options.skip_special_method:
-        methods = [
-            (name, kind) for name, kind in methods
+        attrs = [
+            (name, kind) for name, kind in attrs
             if not (name.startswith("__") and name.endswith("__"))
         ]
 
     if options.skip_private_method:
-        methods = [
-            (name, kind) for name, kind in methods
+        attrs = [
+            (name, kind) for name, kind in attrs
             if not name.startswith("_") or name.endswith("__")
         ]
-    return methods
+    return attrs
 
 
-def shape_text(this_cls, methods, *, options):
-    calling_structure = find_calling_structure(this_cls, methods)
+def shape_text(this_cls, attrs, *, options):
+    calling_structure = find_calling_structure(this_cls, attrs)
 
-    def _iterate_methods_toplevel_first_order():
+    def _iterate_attrs_toplevel_first_order():
         used = set()
         rdeps = defaultdict(list)
         for name, callings in calling_structure.items():
             for subname in callings:
                 rdeps[subname].append(name)
 
-        for name, kind in methods:
+        for name, kind in attrs:
             is_toplevel = name not in rdeps
             if is_toplevel:
                 used.add(name)
                 yield name, kind
 
-        for name, kind in methods:
+        for name, kind in attrs:
             if name in used:
                 continue
             used.add(name)
             yield name, kind
 
     seen = set()
-    kind_mapping = {name: kind for name, kind in methods}
+    kind_mapping = {name: kind for name, kind in attrs}
 
     def _iterate_with_nested_level(name, kind, *, history, level=1):
         if name in history:
@@ -134,7 +134,7 @@ def shape_text(this_cls, methods, *, options):
             )
 
     method_docs = []
-    for name, kind in _iterate_methods_toplevel_first_order():
+    for name, kind in _iterate_attrs_toplevel_first_order():
         if name in seen:
             continue
         for name, kind, level in _iterate_with_nested_level(name, kind, history=[]):
@@ -166,8 +166,8 @@ def inspect(target, *, options, io=None):
     for cls in target.mro():
         if cls == object:
             break
-        methods = collect_methods(cls, options=options)
-        text = shape_text(cls, methods, options=options)
+        attrs = collect_attrs(cls, options=options)
+        text = shape_text(cls, attrs, options=options)
 
         print(text, file=io)
         print("", file=io)
