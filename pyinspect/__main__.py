@@ -11,6 +11,16 @@ def main(argv=None):
     subparsers = parser.add_subparsers(dest="subcommand")
     subparsers.required = True
 
+    resolve_parser = subparsers.add_parser(resolve.__name__)
+    resolve_parser.set_defaults(fn=resolve)
+    resolve_parser.add_argument("module_list", nargs="*")
+
+    list_parser = subparsers.add_parser(list.__name__)
+    list_parser.set_defaults(fn=list)
+    list_parser.add_argument("module")
+    list_parser.add_argument("-d", "--delimiter", default="\t")
+    list_parser.add_argument("--where", action="store_true")
+
     inspect_cmd_parser = subparsers.add_parser(inspect.__name__)
     inspect_cmd_parser.set_defaults(fn=inspect)
     inspect_cmd_parser.add_argument("target_list", nargs="+")
@@ -24,23 +34,34 @@ def main(argv=None):
         "--skip-private-method", action="store_true", help="skip _foo()"
     )
 
-    list_parser = subparsers.add_parser(list.__name__)
-    list_parser.set_defaults(fn=list)
-    list_parser.add_argument("module")
-    list_parser.add_argument("-d", "--delimiter", default="\t")
-    list_parser.add_argument("--where", action="store_true")
-
     args = parser.parse_args(argv)
     params = vars(args)
     params.pop("subcommand")
     params.pop("fn")(**params)
 
 
-def list(*, module, where=False, delimiter=", "):
+def resolve(*, module_list):
     import importlib
+
+    if not module_list:
+        itr = (line.rstrip("\n") for line in sys.stdin)
+    else:
+        itr = module_list
+
+    for module in itr:
+        try:
+            m = importlib.import_module(module)
+        except ModuleNotFoundError as e:
+            print(e, file=sys.stderr)
+            continue
+        print(m.__file__)
+
+
+def list(*, module, where=False, delimiter=", "):
+    import magicalimport
     import pkgutil
     try:
-        m = importlib.import_module(module)
+        m = magicalimport.import_module(module)
     except ModuleNotFoundError as e:
         print(e, file=sys.stderr)
         sys.exit(1)
