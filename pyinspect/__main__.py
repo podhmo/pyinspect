@@ -62,12 +62,12 @@ def list(*, module=None, where=False, delimiter=", ", is_ignore=None):
     import itertools
     import magicalimport
 
-    # valiant of pkgutil.walk_packags
     if is_ignore is None:
 
         def is_ignore(name):
             return "._" in name or name.endswith(".tests")
 
+    # valiant of pkgutil.walk_packags
     def _walk_packages(path=None, prefix='', onerror=None, is_ignore=is_ignore):
         def seen(p, m={}):
             if p in m:
@@ -121,6 +121,7 @@ def list(*, module=None, where=False, delimiter=", ", is_ignore=None):
 
     for sm in iterator:
         row = [sm.name]
+
         if where:
             fname = "__init__.py"
             module_name = sm.name.split(".")[-1]
@@ -131,6 +132,7 @@ def list(*, module=None, where=False, delimiter=", ", is_ignore=None):
                         fname = os.path.join(guessed_fname, "__init__.py")
                     else:
                         fname = guessed_fname
+
             row.append(os.path.join(sm.module_finder.path, fname))
         print(delimiter.join(row))
 
