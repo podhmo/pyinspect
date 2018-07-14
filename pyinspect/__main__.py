@@ -1,20 +1,71 @@
 import sys
+import os.path
 
 
 def main(argv=None):
     import argparse
+
     parser = argparse.ArgumentParser()
-    parser.add_argument("target_list", nargs="+")
-    parser.add_argument("--only-this", action="store_true")
-    parser.add_argument("--all", action="store_true")
-    parser.add_argument("-n", "--show-level", action="store_true")
-    parser.add_argument("--skip-special-method", action="store_true", help="skip __foo__()")
-    parser.add_argument("--skip-private-method", action="store_true", help="skip _foo()")
+    parser.print_usage = parser.print_help  # hack
+
+    subparsers = parser.add_subparsers(dest="subcommand")
+    subparsers.required = True
+
+    inspect_cmd_parser = subparsers.add_parser(inspect.__name__)
+    inspect_cmd_parser.set_defaults(fn=inspect)
+    inspect_cmd_parser.add_argument("target_list", nargs="+")
+    inspect_cmd_parser.add_argument("--only-this", action="store_true")
+    inspect_cmd_parser.add_argument("--all", action="store_true")
+    inspect_cmd_parser.add_argument("-n", "--show-level", action="store_true")
+    inspect_cmd_parser.add_argument(
+        "--skip-special-method", action="store_true", help="skip __foo__()"
+    )
+    inspect_cmd_parser.add_argument(
+        "--skip-private-method", action="store_true", help="skip _foo()"
+    )
+
+    list_parser = subparsers.add_parser(list.__name__)
+    list_parser.set_defaults(fn=list)
+    list_parser.add_argument("module")
+    list_parser.add_argument("-d", "--delimiter", default="\t")
+    list_parser.add_argument("--where", action="store_true")
+
     args = parser.parse_args(argv)
-    run(**vars(args))
+    params = vars(args)
+    params.pop("subcommand")
+    params.pop("fn")(**params)
 
 
-def run(
+def list(*, module, where=False, delimiter=", "):
+    import importlib
+    import pkgutil
+    m = importlib.import_module(module)
+
+    row = [module]
+    if where:
+        row.append(m.__file__)
+    print(delimiter.join(row))
+
+    if not hasattr(m, "__path__"):
+        return
+
+    for sm in pkgutil.walk_packages(m.__path__, prefix=module + "."):
+        row = [sm.name]
+        if where:
+            fname = "__init__.py"
+            module_name = sm.name.split(".")[-1]
+            for guessed_fname in sm.module_finder._path_cache:
+                base, ext = os.path.splitext(guessed_fname)
+                if base == module_name:
+                    if not ext:
+                        fname = os.path.join(guessed_fname, "__init__.py")
+                    else:
+                        fname = guessed_fname
+            row.append(os.path.join(sm.module_finder.path, fname))
+        print(delimiter.join(row))
+
+
+def inspect(
     *,
     target_list,
     only_this=False,
