@@ -54,7 +54,10 @@ def resolve(*, module_list):
         except ModuleNotFoundError as e:
             print(e, file=sys.stderr)
             continue
-        print(m.__file__)
+        filepath = m.__file__
+        if filepath.endswith("/__init__.py"):
+            filepath = filepath[:-len("/__init__.py")]
+        print(filepath)
 
 
 def list(*, module=None, where=False, delimiter=", ", is_ignore=None):
