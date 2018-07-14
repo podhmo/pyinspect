@@ -39,7 +39,11 @@ def main(argv=None):
 def list(*, module, where=False, delimiter=", "):
     import importlib
     import pkgutil
-    m = importlib.import_module(module)
+    try:
+        m = importlib.import_module(module)
+    except ModuleNotFoundError as e:
+        print(e, file=sys.stderr)
+        sys.exit(1)
 
     row = [module]
     if where:
@@ -92,10 +96,14 @@ def inspect(
         )
 
     for path in target_list:
-        if ":" in path:
-            target = magicalimport.import_symbol(path, sep=":")
-        else:
-            target = magicalimport.import_module(path)
+        try:
+            if ":" in path:
+                target = magicalimport.import_symbol(path, sep=":")
+            else:
+                target = magicalimport.import_module(path)
+        except ModuleNotFoundError as e:
+            print(e, file=sys.stderr)
+            continue
 
         if isclass(target):
             _inspect(target)
