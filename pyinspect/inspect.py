@@ -25,7 +25,12 @@ def _indent(text, prefix=INDENT_PREFIX):
     return '\n'.join(lines)
 
 
-def doc(name, ob):
+def doc(name, kind, ob):
+    if kind == "property":
+        if not hasattr(ob, "fget"):
+            return f"{name}"
+        ob = ob.fget
+
     # pydoc.plaintext.doc(ob)
     return f"{name}{signature(ob)}"
 
@@ -78,7 +83,7 @@ def find_calling_structure(cls, methods, *, method_owners=("self", "cls")):
 def collect_attrs(this_cls, *, options):
     attrs = [
         (name, kind) for name, kind, cls, _ in classify_class_attrs(this_cls)
-        if cls == this_cls and "method" in kind
+        if cls == this_cls and ("method" in kind or "property" == kind)
     ]
 
     if options.skip_special_method:
@@ -89,8 +94,7 @@ def collect_attrs(this_cls, *, options):
 
     if options.skip_private_method:
         attrs = [
-            (name, kind) for name, kind in attrs
-            if not name.startswith("_") or name.endswith("__")
+            (name, kind) for name, kind in attrs if not name.startswith("_") or name.endswith("__")
         ]
     return attrs
 
@@ -141,7 +145,7 @@ def shape_text(this_cls, attrs, *, options):
             prefix = ", OVERRIDE" if any(c for c in this_cls.mro()[1:] if hasattr(c, name)) else ""
 
             try:
-                content = doc(name, getattr(this_cls, name))
+                content = doc(name, kind, getattr(this_cls, name))
             except ValueError as e:
                 logger.info(e)
                 continue
