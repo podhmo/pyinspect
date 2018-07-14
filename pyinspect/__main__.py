@@ -17,7 +17,7 @@ def main(argv=None):
 
     list_parser = subparsers.add_parser(list.__name__)
     list_parser.set_defaults(fn=list)
-    list_parser.add_argument("module")
+    list_parser.add_argument("module", nargs="?", default=None)
     list_parser.add_argument("-d", "--delimiter", default="\t")
     list_parser.add_argument("--where", action="store_true")
 
@@ -57,25 +57,69 @@ def resolve(*, module_list):
         print(m.__file__)
 
 
-def list(*, module, where=False, delimiter=", "):
-    import magicalimport
+def list(*, module=None, where=False, delimiter=", ", is_ignore=None):
     import pkgutil
-    try:
-        m = magicalimport.import_module(module)
-    except ModuleNotFoundError as e:
-        print(e, file=sys.stderr)
-        sys.exit(1)
+    import itertools
+    import magicalimport
 
-    row = [module]
-    if where:
-        if hasattr(row, "__file__"):
-            row.append(m.__file__)
-    print(delimiter.join(row))
+    # valiant of pkgutil.walk_packags
+    if is_ignore is None:
 
-    if not hasattr(m, "__path__"):
-        return
+        def is_ignore(name):
+            return "._" in name or name.endswith(".tests")
 
-    for sm in pkgutil.walk_packages(m.__path__, prefix=module + "."):
+    def _walk_packages(path=None, prefix='', onerror=None, is_ignore=is_ignore):
+        def seen(p, m={}):
+            if p in m:
+                return True
+            m[p] = True
+
+        for info in pkgutil.iter_modules(path, prefix):
+            if is_ignore(info.name):
+                continue
+            yield info
+
+            if info.ispkg:
+                try:
+                    __import__(info.name)
+                except ImportError:
+                    if onerror is not None:
+                        onerror(info.name)
+                except Exception:
+                    if onerror is not None:
+                        onerror(info.name)
+                    else:
+                        raise
+                else:
+                    path = getattr(sys.modules[info.name], '__path__', None) or []
+
+                    # don't traverse path items we've seen before
+                    path = [p for p in path if not seen(p)]
+
+                    yield from _walk_packages(path, info.name + '.', onerror)
+
+    if module is None:
+        iterator = (sm for sm in pkgutil.iter_modules() if not sm.name.startswith("_"))
+    else:
+        try:
+            m = magicalimport.import_module(module)
+        except ModuleNotFoundError as e:
+            print(e, file=sys.stderr)
+            sys.exit(1)
+
+        if not hasattr(m, "__path__"):
+            return
+
+        class fake_module_finder:
+            _path_cache = []
+            path = getattr(m, "__file__", None)
+
+        iterator = itertools.chain(
+            [pkgutil.ModuleInfo(module_finder=fake_module_finder, name=module, ispkg=False)],
+            _walk_packages(m.__path__, prefix=module + ".")
+        )
+
+    for sm in iterator:
         row = [sm.name]
         if where:
             fname = "__init__.py"
