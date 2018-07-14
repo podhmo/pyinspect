@@ -47,7 +47,8 @@ def list(*, module, where=False, delimiter=", "):
 
     row = [module]
     if where:
-        row.append(m.__file__)
+        if hasattr(row, "__file__"):
+            row.append(m.__file__)
     print(delimiter.join(row))
 
     if not hasattr(m, "__path__"):
