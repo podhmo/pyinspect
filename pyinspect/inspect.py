@@ -64,8 +64,11 @@ def find_calling_structure(cls, methods, *, method_owners=("self", "cls")):
         seen = seen_dict[target_method_name]
         try:
             source_code = textwrap.dedent(getsource(getattr(cls, target_method_name)))
+        except OSError as e:
+            logger.info("%r (cls=%s, attr=%s)", e, cls.__name__, target_method_name)
+            continue
         except TypeError as e:
-            logger.info(repr(e))
+            logger.info("%r (cls=%s, attr=%s)", e, cls.__name__, target_method_name)
             continue
 
         t = ast.parse(source_code)
