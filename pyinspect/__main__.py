@@ -41,7 +41,7 @@ def main(argv=None):
 
 
 def resolve(*, module_list):
-    import importlib
+    from importlib.util import find_spec
 
     if not module_list:
         itr = (line.rstrip("\n") for line in sys.stdin)
@@ -49,12 +49,12 @@ def resolve(*, module_list):
         itr = module_list
 
     for module in itr:
-        try:
-            m = importlib.import_module(module)
-        except ModuleNotFoundError as e:
-            print(e, file=sys.stderr)
+        spec = find_spec(module)
+        if spec is None:
             continue
-        filepath = m.__file__
+        filepath = spec.origin
+        if filepath is None:
+            continue
         if filepath.endswith("/__init__.py"):
             filepath = filepath[:-len("/__init__.py")]
         print(filepath)
