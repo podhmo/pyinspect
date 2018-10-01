@@ -43,10 +43,7 @@ def main(argv=None):
 def resolve(*, module_list):
     from importlib.util import find_spec
 
-    if not module_list:
-        itr = (line.rstrip("\n") for line in sys.stdin)
-    else:
-        itr = module_list
+    itr = module_list or (line.rstrip("\n") for line in sys.stdin)
 
     for module in itr:
         spec = find_spec(module)
