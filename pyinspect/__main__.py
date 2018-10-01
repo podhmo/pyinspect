@@ -61,7 +61,7 @@ def list(*, module=None, where=False, delimiter=", ", is_ignore=None):
     import pkgutil
     import itertools
     import magicalimport
-
+    from importlib import import_module
     if is_ignore is None:
 
         def is_ignore(name):
@@ -81,7 +81,7 @@ def list(*, module=None, where=False, delimiter=", ", is_ignore=None):
 
             if info.ispkg:
                 try:
-                    __import__(info.name)
+                    import_module(info.name)
                 except ImportError:
                     if onerror is not None:
                         onerror(info.name)
