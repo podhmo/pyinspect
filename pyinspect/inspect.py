@@ -1,3 +1,4 @@
+import sys
 import ast
 import textwrap
 from inspect import (
@@ -8,6 +9,7 @@ from inspect import (
 from collections import (
     namedtuple,
     defaultdict,
+    deque,
 )
 from logging import getLogger as get_logger
 
@@ -163,7 +165,7 @@ def shape_text(this_cls, attrs, *, options):
                 prefix = f"{level:02}:{prefix}"
             method_docs.append(_indent(description, prefix=prefix))
 
-    relation = " <- ".join([f"{cls.__module__}.{cls.__name__}" for cls in this_cls.mro()])
+    relation = " <- ".join([f"{cls.__module__}:{cls.__name__}" for cls in this_cls.mro()])
     if options.show_level:
         relation = f"00:{relation}"
 
@@ -171,8 +173,14 @@ def shape_text(this_cls, attrs, *, options):
     return "\n".join([relation, body]).rstrip("\n")
 
 
-def inspect(target, *, options, io=None):
-    for cls in target.mro():
+def inspect(target_class, *, options, io=None):
+    try:
+        mro = target_class.mro()
+    except TypeError as e:
+        logger.info("%r (cls=%s)", e, target_class.__name__)
+        return
+
+    for cls in mro:
         if cls == object:
             break
         attrs = collect_attrs(cls, options=options)
@@ -183,3 +191,62 @@ def inspect(target, *, options, io=None):
 
         if options.only_this:
             break
+
+
+def inspect_function(target_function, *, options, io=None):
+    m = sys.modules[target_function.__module__]
+
+    def _find_calling_structure(target_function):
+
+        calling_structure = defaultdict(list)
+        calling_structure[target_function.__name__] = []
+
+        q = deque([target_function.__name__])
+
+        seen = set()
+        while len(q):
+            name = q.popleft()
+            if name in seen:
+                continue
+            seen.add(name)
+            try:
+                source_code = textwrap.dedent(getsource(getattr(m, name)))
+            except OSError as e:
+                logger.info("%r (fn=%s)", e, name)
+                continue
+            except TypeError as e:
+                logger.info("%r (fn=%s)", e, name)
+                continue
+
+            t = ast.parse(source_code)
+            for node in ast.walk(t):
+                if isinstance(node, ast.Call):
+                    if not hasattr(node.func, "id"):
+                        continue
+                    if node.func.id.startswith("_"):
+                        continue
+
+                    # todo: support high order function's arguments
+                    if hasattr(m, node.func.id):
+                        calling_structure[name].append(node.func.id)
+                        q.append(node.func.id)
+        return calling_structure
+
+    seen = set()
+    calling_structure = _find_calling_structure(target_function)
+
+    def _shape_text(name, level=0):
+        if name in seen:
+            return
+        seen.add(name)
+
+        prefix = INDENT_PREFIX * level
+        if options.show_level:
+            prefix = f"{level:02}:{prefix}"
+
+        fn = getattr(m, name)
+        io.write(f"{prefix}[function] {doc(name, 'function', fn)}\n")
+        for subname in calling_structure[name]:
+            _shape_text(subname, level + 1)
+
+    _shape_text(target_function.__name__)

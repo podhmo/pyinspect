@@ -146,13 +146,13 @@ def inspect(
     skip_special_method=False,
     skip_private_method=False
 ):
-    from inspect import isclass, ismodule
-    from pyinspect.inspect import inspect
+    from inspect import isclass, ismodule, isfunction
+    from pyinspect.inspect import inspect, inspect_function
     from pyinspect.inspect import Options as inspect_options
     import magicalimport
 
-    def _inspect(target):
-        return inspect(
+    def _inspect(target, *, fn=inspect):
+        return fn(
             target,
             options=inspect_options(
                 skip_special_method=skip_special_method,
@@ -178,14 +178,22 @@ def inspect(
         elif ismodule(target):
             builtins = sys.modules["builtins"]
             for member in target.__dict__.values():
-                if isclass(member):
-                    where = getattr(member, "__module__", None)
-                    if where == builtins:
-                        continue
+                where = getattr(member, "__module__", None)
+                if where == builtins:
+                    continue
 
-                    if all or where == target.__name__:
+                if all or where == target.__name__:
+                    if isclass(member):
                         _inspect(member)
                         print("----------------------------------------", file=sys.stdout)
+                    elif isfunction(member):
+                        # todo: shared calling_structure
+                        if member.__name__.startswith("_"):
+                            continue
+                        _inspect(member, fn=inspect_function)
+                        print("----------------------------------------", file=sys.stdout)
+        elif isfunction(target):
+            _inspect(target, fn=inspect_function)
         else:
             print(
                 f"sorry {path} is not class (type={type(target)}, repr={target})", file=sys.stderr
