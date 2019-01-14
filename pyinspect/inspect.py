@@ -34,7 +34,7 @@ def doc(name, kind, ob):
     # pydoc.plaintext.doc(ob)
     try:
         return f"{name}{signature(ob)}"
-    except TypeError as e:
+    except (TypeError, ValueError) as e:
         logger.info(repr(e))
         return f"{name}"
 
