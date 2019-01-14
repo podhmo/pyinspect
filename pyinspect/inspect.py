@@ -209,6 +209,8 @@ def inspect_function(target_function, *, options, io=None):
             if name in seen:
                 continue
             seen.add(name)
+            if not hasattr(m, name):
+                continue
             try:
                 source_code = textwrap.dedent(getsource(getattr(m, name)))
             except OSError as e:
@@ -239,6 +241,8 @@ def inspect_function(target_function, *, options, io=None):
         if name in seen:
             return
         seen.add(name)
+        if not hasattr(m, name):
+            return
 
         prefix = INDENT_PREFIX * level
         if options.show_level:
