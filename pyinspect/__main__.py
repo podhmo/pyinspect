@@ -8,6 +8,8 @@ def main(argv=None):
     parser = argparse.ArgumentParser()
     parser.print_usage = parser.print_help  # hack
 
+    parser.add_argument("--here", default=None)
+
     subparsers = parser.add_subparsers(dest="subcommand")
     subparsers.required = True
 
@@ -35,7 +37,11 @@ def main(argv=None):
     )
 
     args = parser.parse_args(argv)
-    params = vars(args)
+    params = vars(args).copy()
+
+    # support relative
+    sys.path.append(params.pop("here") or os.getcwd())
+
     params.pop("subcommand")
     params.pop("fn")(**params)
 
