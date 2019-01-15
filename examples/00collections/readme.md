@@ -224,7 +224,7 @@ pyinspect inspect -n collections
 
 ----------------------------------------
 00:[function] namedtuple(typename, field_names, *, rename=False, defaults=None, module=None)
-01:    [function] OrderedDict
+01:    [class] OrderedDict
 ----------------------------------------
 00:collections:Counter <- builtins:dict <- builtins:object
 01:    [method] __add__(self, other)
@@ -280,7 +280,7 @@ pyinspect inspect -n collections
 01:    [method] __setitem__(self, key, value)
 01:    [method] clear(self)
 02:        [method] popitem(self)
-01:    [method] pop(self, key, default=<object object at 0x7f5037e9a070>)
+01:    [method] pop(self, key, default=<object object at 0x7f3757f9f070>)
 01:    [method] setdefault(self, key, default=None)
 01:    [method] update(*args, **kwds)
 
@@ -326,7 +326,7 @@ pyinspect inspect -n collections
 01:    [method] __setitem__(self, key, value)
 01:    [method] clear(self)
 02:        [method] popitem(self)
-01:    [method] pop(self, key, default=<object object at 0x7f5037e9a070>)
+01:    [method] pop(self, key, default=<object object at 0x7f3757f9f070>)
 01:    [method] setdefault(self, key, default=None)
 01:    [method] update(*args, **kwds)
 

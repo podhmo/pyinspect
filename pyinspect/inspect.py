@@ -2,6 +2,7 @@ import sys
 import ast
 import textwrap
 from inspect import (
+    isclass,
     signature,
     classify_class_attrs,
     getsource,
@@ -200,6 +201,13 @@ def inspect(target_class, *, options, io=None):
             break
 
 
+def _classify_callable(fn):
+    if isclass(fn):
+        return "class"
+    else:
+        return "function"
+
+
 def inspect_function(target_function, *, options, io=None):
     m = sys.modules[target_function.__module__]
 
@@ -256,7 +264,7 @@ def inspect_function(target_function, *, options, io=None):
             prefix = f"{level:02}:{prefix}"
 
         fn = getattr(m, name)
-        io.write(f"{prefix}[function] {doc(name, 'function', fn)}\n")
+        io.write(f"{prefix}[{_classify_callable(fn)}] {doc(name, 'function', fn)}\n")
         for subname in calling_structure[name]:
             _shape_text(subname, level + 1)
 
