@@ -30,7 +30,7 @@ class Tests(TestCaseWithDebugLogging):
         got = self._callFUT(F)
         expected = textwrap.dedent(
             f"""\
-        {__name__}.F <- builtins.object
+        {__name__}:F <- builtins:object
             [method] init(self, x, *, y=None)
                 [method] init_x(self, x)
                     [method] init_shared(self, rec=False)
@@ -58,7 +58,7 @@ class Tests(TestCaseWithDebugLogging):
         got = self._callFUT(F)
         expected = textwrap.dedent(
             f"""\
-        {__name__}.F <- builtins.object
+        {__name__}:F <- builtins:object
             [method] init(self, x, *, y=None)
                 [method] init_x(self, x)
                     [method] init_x_z(self, x)
