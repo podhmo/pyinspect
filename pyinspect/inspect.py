@@ -183,6 +183,13 @@ def inspect(target_class, *, options, io=None):
     for cls in mro:
         if cls == object:
             break
+
+        # skip builtins object
+        if cls.__module__ == "builtins" and getattr(
+            sys.modules["builtins"], cls.__name__, None
+        ) == cls:
+            continue
+
         attrs = collect_attrs(cls, options=options)
         text = shape_text(cls, attrs, options=options)
 

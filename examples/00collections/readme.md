@@ -52,36 +52,6 @@ pyinspect inspect -n collections
 01:    [method, OVERRIDE] __repr__(self, /)
 01:    [method, OVERRIDE] copy
 
-00:builtins:dict <- builtins:object
-01:    [method] __contains__(self, key, /)
-01:    [method] __delitem__(self, key, /)
-01:    [method, OVERRIDE] __eq__(self, value, /)
-01:    [method, OVERRIDE] __ge__(self, value, /)
-01:    [method, OVERRIDE] __getattribute__(self, name, /)
-01:    [method] __getitem__
-01:    [method, OVERRIDE] __gt__(self, value, /)
-01:    [method, OVERRIDE] __init__(self, /, *args, **kwargs)
-01:    [method] __iter__(self, /)
-01:    [method, OVERRIDE] __le__(self, value, /)
-01:    [method] __len__(self, /)
-01:    [method, OVERRIDE] __lt__(self, value, /)
-01:    [method, OVERRIDE] __ne__(self, value, /)
-01:    [static method, OVERRIDE] __new__(*args, **kwargs)
-01:    [method, OVERRIDE] __repr__(self, /)
-01:    [method] __setitem__(self, key, value, /)
-01:    [method, OVERRIDE] __sizeof__
-01:    [method] clear
-01:    [method] copy
-01:    [class method] fromkeys(iterable, value=None, /)
-01:    [method] get(self, key, default=None, /)
-01:    [method] items
-01:    [method] keys
-01:    [method] pop
-01:    [method] popitem
-01:    [method] setdefault(self, key, default=None, /)
-01:    [method] update
-01:    [method] values
-
 ----------------------------------------
 00:collections:_OrderedDictKeysView <- collections.abc:KeysView <- collections.abc:MappingView <- collections.abc:Set <- collections.abc:Collection <- collections.abc:Sized <- collections.abc:Iterable <- collections.abc:Container <- builtins:object
 01:    [method] __reversed__(self)
@@ -252,36 +222,6 @@ pyinspect inspect -n collections
 01:    [method, OVERRIDE] update
 01:    [method, OVERRIDE] values
 
-00:builtins:dict <- builtins:object
-01:    [method] __contains__(self, key, /)
-01:    [method] __delitem__(self, key, /)
-01:    [method, OVERRIDE] __eq__(self, value, /)
-01:    [method, OVERRIDE] __ge__(self, value, /)
-01:    [method, OVERRIDE] __getattribute__(self, name, /)
-01:    [method] __getitem__
-01:    [method, OVERRIDE] __gt__(self, value, /)
-01:    [method, OVERRIDE] __init__(self, /, *args, **kwargs)
-01:    [method] __iter__(self, /)
-01:    [method, OVERRIDE] __le__(self, value, /)
-01:    [method] __len__(self, /)
-01:    [method, OVERRIDE] __lt__(self, value, /)
-01:    [method, OVERRIDE] __ne__(self, value, /)
-01:    [static method, OVERRIDE] __new__(*args, **kwargs)
-01:    [method, OVERRIDE] __repr__(self, /)
-01:    [method] __setitem__(self, key, value, /)
-01:    [method, OVERRIDE] __sizeof__
-01:    [method] clear
-01:    [method] copy
-01:    [class method] fromkeys(iterable, value=None, /)
-01:    [method] get(self, key, default=None, /)
-01:    [method] items
-01:    [method] keys
-01:    [method] pop
-01:    [method] popitem
-01:    [method] setdefault(self, key, default=None, /)
-01:    [method] update
-01:    [method] values
-
 ----------------------------------------
 00:[function] namedtuple(typename, field_names, *, rename=False, defaults=None, module=None)
 01:    [function] OrderedDict
@@ -313,36 +253,6 @@ pyinspect inspect -n collections
 01:    [class method, OVERRIDE] fromkeys(iterable, v=None)
 01:    [method] subtract(*args, **kwds)
 
-00:builtins:dict <- builtins:object
-01:    [method] __contains__(self, key, /)
-01:    [method] __delitem__(self, key, /)
-01:    [method, OVERRIDE] __eq__(self, value, /)
-01:    [method, OVERRIDE] __ge__(self, value, /)
-01:    [method, OVERRIDE] __getattribute__(self, name, /)
-01:    [method] __getitem__
-01:    [method, OVERRIDE] __gt__(self, value, /)
-01:    [method, OVERRIDE] __init__(self, /, *args, **kwargs)
-01:    [method] __iter__(self, /)
-01:    [method, OVERRIDE] __le__(self, value, /)
-01:    [method] __len__(self, /)
-01:    [method, OVERRIDE] __lt__(self, value, /)
-01:    [method, OVERRIDE] __ne__(self, value, /)
-01:    [static method, OVERRIDE] __new__(*args, **kwargs)
-01:    [method, OVERRIDE] __repr__(self, /)
-01:    [method] __setitem__(self, key, value, /)
-01:    [method, OVERRIDE] __sizeof__
-01:    [method] clear
-01:    [method] copy
-01:    [class method] fromkeys(iterable, value=None, /)
-01:    [method] get(self, key, default=None, /)
-01:    [method] items
-01:    [method] keys
-01:    [method] pop
-01:    [method] popitem
-01:    [method] setdefault(self, key, default=None, /)
-01:    [method] update
-01:    [method] values
-
 ----------------------------------------
 00:collections:ChainMap <- collections.abc:MutableMapping <- collections.abc:Mapping <- collections.abc:Collection <- collections.abc:Sized <- collections.abc:Iterable <- collections.abc:Container <- builtins:object
 01:    [method] __bool__(self)
@@ -370,7 +280,7 @@ pyinspect inspect -n collections
 01:    [method] __setitem__(self, key, value)
 01:    [method] clear(self)
 02:        [method] popitem(self)
-01:    [method] pop(self, key, default=<object object at 0x7efe9aa28070>)
+01:    [method] pop(self, key, default=<object object at 0x7f5037e9a070>)
 01:    [method] setdefault(self, key, default=None)
 01:    [method] update(*args, **kwds)
 
@@ -416,7 +326,7 @@ pyinspect inspect -n collections
 01:    [method] __setitem__(self, key, value)
 01:    [method] clear(self)
 02:        [method] popitem(self)
-01:    [method] pop(self, key, default=<object object at 0x7efe9aa28070>)
+01:    [method] pop(self, key, default=<object object at 0x7f5037e9a070>)
 01:    [method] setdefault(self, key, default=None)
 01:    [method] update(*args, **kwds)
 
