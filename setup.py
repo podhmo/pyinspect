@@ -1,58 +1,24 @@
-# -*- coding:utf-8 -*-
-
-import os
-import sys
-
-
 from setuptools import setup, find_packages
-here = os.path.abspath(os.path.dirname(__file__))
-try:
-    with open(os.path.join(here, 'README.rst')) as f:
-        README = f.read()
-    with open(os.path.join(here, 'CHANGES.txt')) as f:
-        CHANGES = f.read()
-except IOError:
-    README = CHANGES = ''
 
 
-install_requires = [
-    "magicalimport"
-]
+install_requires = ["magicalimport"]
+dev_requires = ["black", "flake8"]
+tests_requires = []
 
-
-docs_extras = [
-]
-
-tests_require = [
-]
-
-testing_extras = tests_require + [
-]
-
-setup(name='pyinspect',
-      version='0.0',
-      description='-',
-      long_description=README + '\n\n' + CHANGES,
-      classifiers=[
-          "Programming Language :: Python",
-          "Programming Language :: Python :: Implementation :: CPython",
-      ],
-      keywords='',
-      author="",
-      author_email="",
-      url="",
-      packages=find_packages(exclude=["pyinspect.tests"]),
-      include_package_data=True,
-      zip_safe=False,
-      install_requires=install_requires,
-      extras_require={
-          'testing': testing_extras,
-          'docs': docs_extras,
-      },
-      tests_require=tests_require,
-      test_suite="pyinspect.tests",
-      entry_points="""
-      [console_scripts]
-      pyinspect=pyinspect.__main__:main
-""")
-
+setup(
+    classifiers=[
+        # "License :: OSI Approved :: MIT License",
+        "Programming Language :: Python :: 3",
+        # How mature is this project? Common values are
+        #   3 - Alpha
+        #   4 - Beta
+        #   5 - Production/Stable
+        "Development Status :: 3 - Alpha",
+    ],
+    python_requires=">3.5",
+    packages=find_packages(exclude=["pyinspect.tests"]),
+    install_requires=install_requires,
+    extras_require={"testing": tests_requires, "dev": dev_requires},
+    tests_require=tests_requires,
+    test_suite="pyinspect.tests",
+)

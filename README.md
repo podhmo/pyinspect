@@ -1,0 +1,4 @@
+# pyinspect
+
+
+`examples <./examples>`_
