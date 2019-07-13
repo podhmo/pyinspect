@@ -1,5 +1,7 @@
 # pyinspect
 
+[examples](./examples)
+
 ```console
 $ pyinspect -h
 usage: pyinspect [-h] [--here HERE] {resolve,list,inspect,parse,quote} ...
@@ -245,6 +247,3 @@ $ pyinspect parse setup.py
       visit_NEWLINE (prefix='', value='\n', type=4)
     visit_ENDMARKER (prefix='', value='', type=0)
 ```
-
-
-[examples][./examples]
