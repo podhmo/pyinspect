@@ -2,7 +2,9 @@ from lib2to3 import pytree
 from lib2to3 import pygram
 from lib2to3.pgen2 import driver
 from lib2to3.pgen2 import token
+from lib2to3.pytree import Node, Leaf  # noqa
 from lib2to3.pgen2.parse import ParseError
+from lib2to3.fixer_util import find_indentation  # noqa
 import logging
 from ..langhelpers import reify
 
