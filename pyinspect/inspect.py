@@ -1,31 +1,22 @@
 import sys
 import ast
 import textwrap
-from inspect import (
-    isclass,
-    signature,
-    classify_class_attrs,
-    getsource,
-)
-from collections import (
-    namedtuple,
-    defaultdict,
-    deque,
-)
+from inspect import isclass, signature, classify_class_attrs, getsource
+from collections import namedtuple, defaultdict, deque
 from logging import getLogger as get_logger
 
 logger = get_logger(__name__)
-INDENT_PREFIX = '    '
+INDENT_PREFIX = "    "
 
 
 def _indent(text, prefix=INDENT_PREFIX):
     """Indent text by prepending a given prefix to each line."""
     if not text:
-        return ''
-    lines = [prefix + line for line in text.split('\n')]
+        return ""
+    lines = [prefix + line for line in text.split("\n")]
     if lines:
         lines[-1] = lines[-1].rstrip()
-    return '\n'.join(lines)
+    return "\n".join(lines)
 
 
 def doc(name, kind, ob):
@@ -41,7 +32,9 @@ def doc(name, kind, ob):
 
 
 class Options(
-    namedtuple("Option", "skip_special_method, skip_private_method, show_level, only_this")
+    namedtuple(
+        "Option", "skip_special_method, skip_private_method, show_level, only_this"
+    )
 ):
     def __new__(
         self,
@@ -90,19 +83,23 @@ def find_calling_structure(cls, methods, *, method_owners=("self", "cls")):
 
 def collect_attrs(this_cls, *, options):
     attrs = [
-        (name, kind) for name, kind, cls, _ in classify_class_attrs(this_cls)
+        (name, kind)
+        for name, kind, cls, _ in classify_class_attrs(this_cls)
         if cls == this_cls and ("method" in kind or "property" == kind)
     ]
 
     if options.skip_special_method:
         attrs = [
-            (name, kind) for name, kind in attrs
+            (name, kind)
+            for name, kind in attrs
             if not (name.startswith("__") and name.endswith("__"))
         ]
 
     if options.skip_private_method:
         attrs = [
-            (name, kind) for name, kind in attrs if not name.startswith("_") or name.endswith("__")
+            (name, kind)
+            for name, kind in attrs
+            if not name.startswith("_") or name.endswith("__")
         ]
     return attrs
 
@@ -150,7 +147,11 @@ def shape_text(this_cls, attrs, *, options):
         if name in seen:
             continue
         for name, kind, level in _iterate_with_nested_level(name, kind, history=[]):
-            prefix = ", OVERRIDE" if any(c for c in this_cls.mro()[1:] if hasattr(c, name)) else ""
+            prefix = (
+                ", OVERRIDE"
+                if any(c for c in this_cls.mro()[1:] if hasattr(c, name))
+                else ""
+            )
 
             try:
                 content = doc(name, kind, getattr(this_cls, name))
@@ -166,7 +167,9 @@ def shape_text(this_cls, attrs, *, options):
                 prefix = f"{level:02}:{prefix}"
             method_docs.append(_indent(description, prefix=prefix))
 
-    relation = " <- ".join([f"{cls.__module__}:{cls.__name__}" for cls in this_cls.mro()])
+    relation = " <- ".join(
+        [f"{cls.__module__}:{cls.__name__}" for cls in this_cls.mro()]
+    )
     if options.show_level:
         relation = f"00:{relation}"
 
@@ -186,9 +189,10 @@ def inspect(target_class, *, options, io=None):
             break
 
         # skip builtins object
-        if cls.__module__ == "builtins" and getattr(
-            sys.modules["builtins"], cls.__name__, None
-        ) == cls:
+        if (
+            cls.__module__ == "builtins"
+            and getattr(sys.modules["builtins"], cls.__name__, None) == cls
+        ):
             continue
 
         attrs = collect_attrs(cls, options=options)

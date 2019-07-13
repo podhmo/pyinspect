@@ -7,6 +7,7 @@ class Tests(TestCaseWithDebugLogging):
         from io import StringIO
         from pyinspect.inspect import Options
         from pyinspect.inspect import inspect as target_function
+
         o = StringIO()
         target_function(cls, options=Options(), io=o)
         return o.getvalue()
@@ -71,5 +72,6 @@ class Tests(TestCaseWithDebugLogging):
 if __name__ == "__main__":
     import unittest
     import logging
+
     logging.basicConfig(level=logging.DEBUG)
     unittest.main()

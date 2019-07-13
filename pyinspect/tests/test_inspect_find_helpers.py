@@ -5,6 +5,7 @@ class Tests(TestCaseWithDebugLogging):
     def _callFUT(self, cls):
         from pyinspect.inspect import collect_attrs, Options
         from pyinspect.inspect import find_calling_structure as target_function
+
         methods = collect_attrs(cls, options=Options())
         return target_function(cls, methods)
 
@@ -60,5 +61,6 @@ class Tests(TestCaseWithDebugLogging):
 if __name__ == "__main__":
     import unittest
     import logging
+
     logging.basicConfig(level=logging.DEBUG)
     unittest.main()
