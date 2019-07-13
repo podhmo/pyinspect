@@ -45,7 +45,7 @@ def main(argv=None):
     # parse
     sparser = subparsers.add_parser(parse.__name__)
     sparser.set_defaults(fn=parse)
-    sparser.add_argument("filenames", nargs="+")
+    sparser.add_argument("sources", nargs="+")
     sparser = None
 
     # quote
@@ -243,14 +243,24 @@ def inspect(
             )
 
 
-def parse(filenames: list) -> None:
+def parse(sources: list) -> None:
     import logging
-    from .code.parse import parse_file, Visitor
+    import pathlib
+    from importlib.util import find_spec
+    from .code.parse import parse_file, PyTreeVisitor
 
-    logging.basicConfig(level=logging.DEBUG)
-    for filename in filenames:
+    logging.basicConfig(level=logging.DEBUG, format="%(message)s")
+    for source in sources:
+        if pathlib.Path(source).exists():
+            filename = source
+        else:
+            try:
+                filename = find_spec(source).loader.get_filename()
+            except AttributeError:
+                print(f"not found:{source}", file=sys.stderr)
+                continue
         t = parse_file(filename)
-        v = Visitor()
+        v = PyTreeVisitor()
         v.visit(t)
 
 

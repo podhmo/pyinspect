@@ -3,10 +3,10 @@ import sys
 import linecache
 from .parse import parse_string, node_name
 from .parse import Node, token
-from .parse import Visitor, find_indentation
+from .parse import PyTreeVisitor, find_indentation
 
 
-class FindNodeVisitor(Visitor):
+class FindNodeVisitor(PyTreeVisitor):
     def __init__(self, lineno):
         self.lineno = lineno
         self.r = []
@@ -19,7 +19,7 @@ class FindNodeVisitor(Visitor):
         super().visit(node)
 
 
-class CuttingNodeVisitor(Visitor):
+class CuttingNodeVisitor(PyTreeVisitor):
     def __init__(self, lineno: int):
         self.lineno = lineno
         self.seen = set()
