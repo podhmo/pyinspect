@@ -4,10 +4,10 @@
 
 ```console
 $ pyinspect -h
-usage: pyinspect [-h] [--here HERE] {resolve,list,inspect,parse,quote} ...
+usage: pyinspect [-h] [--here HERE] {resolve,list,inspect,parse,quote,webpage} ...
 
 positional arguments:
-  {resolve,list,inspect,parse,quote}
+  {resolve,list,inspect,parse,quote,webpage}
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -246,4 +246,15 @@ $ pyinspect parse setup.py
           visit_RPAR (prefix='\n', value=')', type=8)
       visit_NEWLINE (prefix='', value='\n', type=4)
     visit_ENDMARKER (prefix='', value='', type=0)
+```
+
+## webpage
+
+```console
+$ pyinspect webpage --show-only notebook
+http://jupyter.org
+
+# webbrowse.open
+$ pyinspect webpage notebook
+http://jupyter.org
 ```

@@ -63,6 +63,13 @@ def main(argv=None):
     sparser.add_argument("-n", type=int, default=2)
     sparser = None
 
+    # webpage
+    sparser = subparsers.add_parser(webpage.__name__)
+    sparser.set_defaults(fn=webpage)
+    sparser.add_argument("package")
+    sparser.add_argument("--show-only", action="store_true")
+    sparser = None
+
     args = parser.parse_args(argv)
     params = vars(args).copy()
 
@@ -323,6 +330,25 @@ def quote(
         except RuntimeError as e:
             print(f"runtime error: {e}", file=sys.stderr)
             sys.exit(1)
+
+
+def webpage(package: str, *, show_only: bool) -> None:
+    import webbrowser
+    import subprocess
+    import sys
+
+    p = subprocess.run(
+        f"{sys.executable} -m pip show {package}".split(" "),
+        stdout=subprocess.PIPE,
+        text=True,
+    )
+    for line in p.stdout.split("\n"):
+        if "home-page" in line.lower():
+            url = line.split(":", 1)[-1].lstrip(" ")
+            if show_only:
+                print(url)
+            else:
+                webbrowser.open(url)
 
 
 if __name__ == "__main__":
