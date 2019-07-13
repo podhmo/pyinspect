@@ -276,6 +276,7 @@ def quote(
     """quote code"""
     import pathlib
     import contextlib
+    import os
     from io import StringIO
     from importlib.util import find_spec
     from .code.quote import run
@@ -291,7 +292,7 @@ def quote(
                     file=o,
                 )
             except ValueError:
-                print(filename, file=o)
+                print(filename.replace(os.environ.get("HOME", ""), "~"), file=o)
 
         if format == "markdown":
             if show_filename:
