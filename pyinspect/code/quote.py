@@ -20,16 +20,17 @@ class FindNodeVisitor(PyTreeVisitor):
 
 
 class CuttingNodeVisitor(PyTreeVisitor):
-    def __init__(self, lineno: int):
-        self.lineno = lineno
+    def __init__(self, is_ng):
+        self.is_ng = is_ng
         self.seen = set()
 
     # todo: performance
     def visit(self, node: Node):
-        if node.get_lineno() > self.lineno:
+        if self.is_ng(node):
             if node.parent is None:
                 node.remove()
                 return
+
             for i, x in enumerate(node.parent.children):
                 if x == node:
                     for y in node.parent.children[i + 1 :]:
@@ -93,15 +94,41 @@ class Outputter:
         next_sibling = node.next_sibling
         if next_sibling is not None:
             self.upper_bound = min(next_sibling.get_lineno(), self.upper_bound)
-
         node = node.clone()
         node.prefix = prefix
 
+        keep = set()
+
+        def _iterate_node(
+            node,
+            *,
+            _collections_node=("parameters", "typedargslist", "argslist", "tname"),
+        ):
+            for x in node.children:
+                yield x
+                name = node_name(x)
+                if name in _collections_node:
+                    yield from _iterate_node(x, _collections_node=_collections_node)
+                if name == "suite":
+                    break
+
+        if node.children:
+            keep = {id(x) for x in _iterate_node(node)}
         if self.lower_bounds and self.lower_bounds[-1] < node.get_lineno():
             self.output_skipping()
 
         max_limit = node.get_lineno() + self.n
-        v = CuttingNodeVisitor(max_limit)
+
+        def is_ng(
+            x: Node, *, skip_nodes=("funcdef", "classdef", "async_funcdef")
+        ) -> bool:
+            if x == node:
+                return False
+            if node_name(x) in skip_nodes:
+                return True
+            return x.get_lineno() > max_limit and id(x) not in keep
+
+        v = CuttingNodeVisitor(is_ng=is_ng)
         v.visit(node)
         self.lower_bounds.extend(sorted(list(v.seen)))
         print(node, file=self.io)
