@@ -245,12 +245,12 @@ def inspect(
 
 def parse(filenames: list) -> None:
     import logging
-    from .code.parse import parse_file, Visitor
+    from .code.parse import parse_file, PyTreeVisitor
 
     logging.basicConfig(level=logging.DEBUG)
     for filename in filenames:
         t = parse_file(filename)
-        v = Visitor()
+        v = PyTreeVisitor()
         v.visit(t)
 
 
