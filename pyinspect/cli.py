@@ -54,6 +54,7 @@ def main(argv=None):
     sparser.add_argument("source", help="<filename or module path>(:L?<lineno>)?")
     sparser.add_argument("--lineno", type=int)
     sparser.add_argument("--show-lineno", action="store_true")
+    sparser.add_argument("--show-fulldoc", action="store_true")
     sparser.add_argument(
         "-f", "--format", choices=["markdown", "raw"], default="markdown"
     )
@@ -279,6 +280,7 @@ def quote(
     show_lineno: bool,
     format: str,
     show_filename: bool,
+    show_fulldoc: bool,
 ) -> None:
     """quote code"""
     import pathlib
@@ -326,7 +328,14 @@ def quote(
             sys.exit(1)
     with _submit(filename):
         try:
-            run(filename, lineno=lineno, n=n, show_lineno=show_lineno, io=o)
+            run(
+                filename,
+                lineno=lineno,
+                n=n,
+                show_lineno=show_lineno,
+                io=o,
+                show_fulldoc=show_fulldoc,
+            )
         except RuntimeError as e:
             print(f"runtime error: {e}", file=sys.stderr)
             sys.exit(1)

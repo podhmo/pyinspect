@@ -1,6 +1,8 @@
+import typing as t
 import math
 import sys
 import linecache
+import inspect
 from .parse import parse_string, node_name
 from .parse import Node, token
 from .parse import PyTreeVisitor, find_indentation
@@ -68,11 +70,37 @@ def find_parents(node: Node) -> Node:
     return reversed(r)
 
 
+def get_summary(node: t.Optional[Node]) -> str:
+    if not node:
+        return None
+    doc = inspect.cleandoc(node.value.strip("""\n"'"""))
+    return doc.split("\n\n", 1)[0]
+
+
+def get_doc(node: Node) -> t.Optional[Node]:
+    assert node_name(node) in ("funcdef", "classdef", "async_funcdef")
+    suite = None
+    for x in node.children:
+        if node_name(x) == "suite":
+            suite = x
+            break
+    else:
+        return None
+    for x in suite.children[2:]:
+        if node_name(x) == "simple_stmt":
+            if x.children[0].type == token.STRING:
+                return x.children[0]
+        return None
+
+
 class Outputter:
-    def __init__(self, filename: str, *, n: int, io=sys.stdout):
+    def __init__(
+        self, filename: str, *, n: int, io=sys.stdout, show_fulldoc: bool = False
+    ):
         self.filename = filename
         self.n = n
         self.io = io
+        self.show_fulldoc = show_fulldoc
         self.lower_bounds = []
         self.upper_bound = math.inf
 
@@ -130,6 +158,13 @@ class Outputter:
 
         v = CuttingNodeVisitor(is_ng=is_ng)
         v.visit(node)
+
+        # docstring -> summary
+        if not self.show_fulldoc:
+            doc_node = get_doc(node)
+            if doc_node is not None:
+                doc_node.value = f'"""{get_summary(doc_node)}"""'
+
         self.lower_bounds.extend(sorted(list(v.seen)))
         print(node, file=self.io)
 
@@ -159,10 +194,16 @@ class Outputter:
 
 
 def run(
-    filename, *, lineno: int, n: int = 2, show_lineno: bool = False, io=sys.stdout
+    filename,
+    *,
+    lineno: int,
+    n: int = 2,
+    show_lineno: bool = False,
+    show_fulldoc: bool = False,
+    io=sys.stdout,
 ) -> None:
     # todo: support show_lineno
-    outputter = Outputter(filename, n=n, io=io)
+    outputter = Outputter(filename, n=n, io=io, show_fulldoc=show_fulldoc)
 
     t = parse_string("".join(linecache.getlines(filename)))
     try:
