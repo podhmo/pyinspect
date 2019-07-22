@@ -1,5 +1,8 @@
 import sys
 import os.path
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def main(argv=None):
@@ -252,7 +255,6 @@ def inspect(
 
 
 def parse(sources: list) -> None:
-    import logging
     import pathlib
     from importlib.util import find_spec
     from .code.parse import parse_file, PyTreeVisitor
@@ -346,18 +348,53 @@ def webpage(package: str, *, show_only: bool) -> None:
     import subprocess
     import sys
 
-    p = subprocess.run(
-        f"{sys.executable} -m pip show {package}".split(" "),
-        stdout=subprocess.PIPE,
-        text=True,
-    )
-    for line in p.stdout.split("\n"):
-        if "home-page" in line.lower():
-            url = line.split(":", 1)[-1].lstrip(" ")
-            if show_only:
-                print(url)
-            else:
-                webbrowser.open(url)
+    logging.basicConfig(level=logging.INFO)
+
+    cmd = f"{sys.executable} -m pip show {package}"
+    logger.debug("reading data from %r", cmd)
+    p = subprocess.run(cmd.split(" "), stdout=subprocess.PIPE, text=True)
+    if p.returncode == 1:
+        from importlib import import_module
+
+        try:
+            m = import_module(package)
+
+            import urllib.request
+            import html.parser
+
+            doc_index_url = "https://docs.python.org/library/index.html"
+
+            class _Parser(html.parser.HTMLParser):
+                def handle_starttag(self, tag, attrs):
+                    if tag.lower() != "a":
+                        return
+                    attrs_dict = dict(attrs)
+                    if "href" not in attrs_dict:
+                        return
+                    if not attrs_dict["href"].endswith(f"{m.__name__}.html"):
+                        return
+                    url = urllib.parse.urljoin(doc_index_url, attrs_dict["href"])
+                    logger.info("browse: %r", url)
+                    webbrowser.open(url)
+                    sys.exit(0)
+
+            logger.info("request: %r", doc_index_url)
+            response = urllib.request.urlopen(doc_index_url)
+            parser = _Parser()
+            parser.feed(response.read().decode(encoding="utf-8"))
+
+        except ModuleNotFoundError as e:
+            print(e, file=sys.stderr)
+            sys.exit(1)
+    else:
+        for line in p.stdout.split("\n"):
+            if "home-page" in line.lower():
+                url = line.split(":", 1)[-1].lstrip(" ")
+                if show_only:
+                    print(url)
+                else:
+                    logger.info("browse: %r", url)
+                    webbrowser.open(url)
 
 
 if __name__ == "__main__":
