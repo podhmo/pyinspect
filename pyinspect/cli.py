@@ -74,6 +74,15 @@ def main(argv=None):
     sparser.add_argument("--show-only", action="store_true")
     sparser = None
 
+    # depdency
+    sparser = subparsers.add_parser(dependency.__name__)
+    sparser.set_defaults(fn=dependency)
+    sparser.add_argument("packages", nargs="+")
+    sparser.add_argument("-r", "--reverse", action="store_true")
+    sparser.add_argument("--max-depth", type=int, default=-1)
+    sparser.add_argument("--with-id", action="store_true")
+    sparser = None
+
     args = parser.parse_args(argv)
     params = vars(args).copy()
 
@@ -388,13 +397,63 @@ def webpage(package: str, *, show_only: bool) -> None:
             sys.exit(1)
     else:
         for line in p.stdout.split("\n"):
-            if "home-page" in line.lower():
+            if "home-page:" in line.lower():
                 url = line.split(":", 1)[-1].lstrip(" ")
                 if show_only:
                     print(url)
                 else:
                     logger.info("browse: %r", url)
                     webbrowser.open(url)
+
+
+def dependency(
+    packages: list, *, reverse: bool, max_depth: int = -1, with_id: bool = False
+) -> None:
+    """show package dependecies"""
+    from collections import defaultdict
+    import subprocess
+
+    logging.basicConfig(level=logging.DEBUG)
+    pattern = "required-by" if reverse else "requires:"
+
+    def _collect_deps(package: str, *, pattern: str) -> list:
+        cmd = f"pip show {package}"
+        p = subprocess.run(cmd.split(" "), stdout=subprocess.PIPE, text=True)
+        for line in p.stdout.split("\n"):
+            if pattern in line.lower():
+                matched = [
+                    x.strip()
+                    for x in line.split(":", 1)[-1].lstrip(" ").split(",")
+                    if x.strip()
+                ]
+                return matched
+        return []
+
+    seen = {}
+    id_map = defaultdict(lambda: len(id_map))
+
+    def _walk(package, *, parent, indent=0):
+        if with_id:
+            logger.debug("see: %s%s#%s", "  " * indent, package, id_map[package])
+        else:
+            logger.debug("see: %s%s", "  " * indent, package)
+        k = package.lower()
+        if k in seen:
+            return seen[k]
+
+        current = seen[k] = parent[package] = {}
+        matched = _collect_deps(package, pattern=pattern)
+        for subpackage in matched:
+            current[subpackage] = _walk(subpackage, parent=current, indent=indent + 1)
+        return current
+
+    import json
+
+    structure = {}
+    for package in packages:
+        _walk(package, parent=structure)
+    json.dump(structure, sys.stdout, indent=2)
+    print("")
 
 
 if __name__ == "__main__":
