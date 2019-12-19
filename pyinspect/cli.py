@@ -147,7 +147,7 @@ def list(*, module=None, where=False, delimiter=", ", is_ignore=None):
         iterator = (sm for sm in pkgutil.iter_modules() if not sm.name.startswith("_"))
     else:
         try:
-            m = magicalimport.import_module(module)
+            m = magicalimport.import_module(module, cwd=True)
         except ModuleNotFoundError as e:
             print(e, file=sys.stderr)
             sys.exit(1)
@@ -215,9 +215,9 @@ def inspect(
     for path in target_list:
         try:
             if ":" in path:
-                target = magicalimport.import_symbol(path, sep=":")
+                target = magicalimport.import_symbol(path, sep=":", cwd=True)
             else:
-                target = magicalimport.import_module(path)
+                target = magicalimport.import_module(path, cwd=True)
         except ModuleNotFoundError as e:
             print(e, file=sys.stderr)
             continue
